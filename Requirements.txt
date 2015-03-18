@@ -1,0 +1,22 @@
+Idea
+	- Title
+	- Description
+	- (Health | Technology | Education | Finance | Travel)
+	- Tags
+	- Likes
+	- Dislikes
+	- Date created
+
+User 
+	- Name
+	- Email (login)
+	- Password
+
+Features
+	- User can register in the server
+	- User can login (sesssion is created) and logout of the service (session has to be deleted)
+	- User can post new start-up ideas
+	- User can see her submitted start-up ideas and can edit or delete an idea
+	- User can navigate already submitted ideas of other users
+	- User can see details of a specific idea (an individual page for each idea is expected)
+	- User can express preference in favor or against an idea (like or dislike function)
