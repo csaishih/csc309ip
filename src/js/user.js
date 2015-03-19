@@ -73,11 +73,6 @@ function authenticateLogin(email, password, callback) {
 		});
 }
 
-function generate_password(n, a) {
-  var index = (Math.random() * (a.length - 1)).toFixed(0);
-  return n > 0 ? a[index] + generate_password(n - 1, a) : '';
-}
-
 function changePassword(email, password, callback) {
 	//Make sure email is valid
 	authenticateEmail(email, function(success) {
@@ -123,6 +118,5 @@ exports.checkPassword = checkPassword;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
 exports.authenticateLogin = authenticateLogin;
-exports.generate_password = generate_password;
 exports.changePassword = changePassword;
 exports.createUser = createUser;

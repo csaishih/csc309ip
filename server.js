@@ -2,7 +2,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var user = require('./src/js/user');
-var nodeMailer = require('nodemailer');
 var app = express();
 var server = app.listen(8080);
 var io = require('socket.io').listen(server);
@@ -43,11 +42,6 @@ app.get('/signup.html', function(req, res) {
 //Set up page
 app.get('/setup.html', function(req, res) {
 	res.sendFile('src/html/setup.html', {root: __dirname});
-});
-
-//Lost password page
-app.get('/lostpw.html', function(req, res) {
-	res.sendFile('src/html/lostpw.html', {root: __dirname});
 });
 
 //Main page
@@ -92,39 +86,6 @@ app.post('/login', function(req, res) {
 		}
 	});
 });
-
-app.post('/lostpw', function(req, res) {
-	var email = req.body.email;
-	user.authenticateEmail(email, function(success) {
-		if (success) {
-			var newPassword = user.generate_password(13, 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890');
-			console.log(newPassword);
-			user.changePassword(email, newPassword, function(success) {
-				if (success) {
-					var transporter = nodeMailer.createTransport({
-						service: 'gmail',
-						auth: {
-							user: 'csc301ututor@gmail.com',
-							pass: 'team1ututor'
-						}
-					});
-					transporter.sendMail({
-						from: 'csc301ututor@gmail.com',
-						to: email,
-						subject: 'Reset password',
-						text: "Hello,\n\nYour temporary password is: " + newPassword + "\nPlease sign in and change your password.\n\nRegards,\nCommunity Fund Admin"
-					});
-					res.redirect('/login.html');
-				} else {
-					console.log("Failed to change password");
-				}
-			});
-		} else {
-			console.log("Cannot reset password. Email not found");
-		}
-	});
-});
-
 
 io.on('connection', function(socket) {
 	user.test(function(result) {
