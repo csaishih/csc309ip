@@ -17,6 +17,10 @@ app.use("/src", express.static(__dirname + "/src"));
 
 //Root page
 app.get('/', function(req, res) {
+	user.test(function(result) {
+		console.log(result);
+	});
+	
 	var cookie = req.cookies.email;
 	console.log(cookie);
 	user.authenticateEmail(cookie, function(success) {
