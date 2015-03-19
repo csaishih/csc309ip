@@ -26,7 +26,6 @@ app.get('/', function(req, res) {
 			res.sendFile('src/html/root.html', {root: __dirname});
 		}
 	});
-	
 });
 
 //Login page
