@@ -5,7 +5,7 @@ var connection = mysql.createConnection({
 	host: 'csc309ip.c76klgz6nmgp.us-east-1.rds.amazonaws.com',
 	user: 'g3aishih',
 	password: 'g3aishih!password',
-	database: 'communityfund',
+	database: 'csc309ip',
 	port: 3306
 });
 
