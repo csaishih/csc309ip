@@ -115,7 +115,7 @@ function createUser(name, email, password) {
 }
 
 function insertIdea(title, description, tags, category, dateyear, datemonth, dateday, callback) {
-	connection.query("INSERT INTO idea(title, description, tags, category, date) VALUES('" + title + "', '" + description + "', '" + tags + "', '" + category + "', '" + dateyear + "-" + datemonth + "-" + datedate + "')",
+	connection.query("INSERT INTO idea(title, description, tags, category, date) VALUES('" + title + "', '" + description + "', '" + tags + "', '" + category + "', '" + dateyear + "-" + datemonth + "-" + dateday + "')",
 		function(err, result) {
 			if (err) {
 				throw err;
