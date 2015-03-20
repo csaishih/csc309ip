@@ -105,11 +105,19 @@ app.post('/submitidea', function(req, res) {
 	var description = req.body.description;
 	var tags = req.body.tags;
 	var category = req.body.category;
-
-	console.log(title);
-	console.log(description);
-	console.log(tags);
-	console.log(category);
+	var date = new Date();
+	var dateyear = date.getUTCFullYear();
+	var datemonth = date.getUTCMonth();
+	var dateday = date.getUTCDate();
+	user.insertIdea(title, description, tags, category, dateyear, datemonth, dateday, function(success) {
+		if (success) {
+			res.redirect('/');
+			console.log("Insert success");
+		} else {
+			res.redirect('/createidea');
+			console.log("Insert failed");
+		}
+	});
 });
 
 io.on('connection', function(socket) {

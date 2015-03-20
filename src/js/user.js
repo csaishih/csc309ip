@@ -114,9 +114,21 @@ function createUser(name, email, password) {
 	});
 }
 
+function insertIdea(title, description, tags, category, dateyear, datemonth, dateday, callback) {
+	connection.query("INSERT INTO idea(title, description, tags, category, date) VALUES('" + title + "', '" + description + "', '" + tags + "', '" + category + "', '" + dateyear + "-" + datemonth + "-" + datedate + "')",
+		function(err, result) {
+			if (err) {
+				throw err;
+			} else {
+				callback(result);
+			}
+		});
+}
+
 exports.checkPassword = checkPassword;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
 exports.authenticateLogin = authenticateLogin;
 exports.changePassword = changePassword;
 exports.createUser = createUser;
+exports.insertIdea = insertIdea;
