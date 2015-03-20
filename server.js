@@ -47,6 +47,10 @@ app.get('/mainpage.html', function(req, res) {
 	res.sendFile('src/html/mainpage.html', {root: __dirname});
 });
 
+app.get('/createidea.html', function(req, res) {
+	res.sendFile('src/html/createidea.html', {root: __dirname});
+});
+
 app.post('/signup', function(req, res) {
 	var name = req.body.name;
 	var email = req.body.email;
@@ -69,6 +73,10 @@ app.post('/signup', function(req, res) {
 app.post('/logout', function(req, res) {
 	res.clearCookie("email");
 	res.redirect('/root.html');
+});
+
+app.post('/createidea', function(req, res) {
+	res.redirect('/createidea.html');
 });
 
 app.post('/login', function(req, res) {
