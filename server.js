@@ -18,6 +18,7 @@ app.use("/src", express.static(__dirname + "/src"));
 //Root page
 app.get('/', function(req, res) {
 	var cookie = req.cookies.email;
+	console.log(cookie);
 	user.authenticateEmail(cookie, function(success) {
 		if (success) {
 			res.sendFile('src/html/mainpage.html', {root: __dirname});
@@ -25,6 +26,11 @@ app.get('/', function(req, res) {
 			res.sendFile('src/html/root.html', {root: __dirname});
 		}
 	});
+});
+
+//Root page
+app.get('/root.html', function(req, res) {
+	res.sendFile('src/html/root.html', {root: __dirname});
 });
 
 //Login page
@@ -62,8 +68,8 @@ app.post('/signup', function(req, res) {
 });
 
 app.post('/logout', function(req, res) {
+	res.clearCookie("email");
 	res.redirect('/root.html');
-	res.clearCookie("email", {path: '/'});
 });
 
 app.post('/login', function(req, res) {
