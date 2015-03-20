@@ -100,6 +100,18 @@ app.post('/login', function(req, res) {
 	});
 });
 
+app.post('/submitidea', function(req, res) {
+	var title = req.body.title;
+	var description = req.body.description;
+	var tags = req.body.tags;
+	var category = req.body.category;
+
+	console.log(title);
+	console.log(description);
+	console.log(tags);
+	console.log(category);
+});
+
 io.on('connection', function(socket) {
 	user.test(function(result) {
 		socket.emit('go', {
