@@ -38,11 +38,6 @@ app.get('/signup.html', function(req, res) {
 	res.sendFile('src/html/signup.html', {root: __dirname});
 });
 
-//Set up page
-app.get('/setup.html', function(req, res) {
-	res.sendFile('src/html/setup.html', {root: __dirname});
-});
-
 //Main page
 app.get('/mainpage.html', function(req, res) {
 	res.sendFile('src/html/mainpage.html', {root: __dirname});
@@ -62,6 +57,7 @@ app.post('/signup', function(req, res) {
 		} else {
 			//Authentication failed
 			console.log("Sign up failed");
+			res.redirect('/signup.html');
 		}
 	});
 });
@@ -82,6 +78,7 @@ app.post('/login', function(req, res) {
 		} else {
 			//Authentication failed
 			console.log("Login failed");
+			res.redirect('/login.html');
 		}
 	});
 });
