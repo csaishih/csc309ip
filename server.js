@@ -62,7 +62,8 @@ app.post('/signup', function(req, res) {
 });
 
 app.post('/logout', function(req, res) {
-	console.log("log out works");
+	res.clearCookie("email");
+	res.redirect('/root.html');
 });
 
 app.post('/login', function(req, res) {
