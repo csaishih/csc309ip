@@ -18,7 +18,6 @@ app.use("/src", express.static(__dirname + "/src"));
 //Root page
 app.get('/', function(req, res) {
 	var cookie = req.cookies.email;
-	console.log(cookie);
 	user.authenticateEmail(cookie, function(success) {
 		if (success) {
 			res.sendFile('src/html/mainpage.html', {root: __dirname});
