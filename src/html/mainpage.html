@@ -12,7 +12,7 @@
 					<a href="" class="navbar-brand">CSC309 Individual Project</a>
 				</div>
 				<div class="nav navbar-nav navbar-right">
-					<input type="submit" class="btn btn-default navbar-btn" id="logoutbtn" value="Log out"/>
+					<input type="submit" class="btn btn-default navbar-btn logoutbtn" value="Log out"/>
         		</div>
 			</div>
 		</nav>
@@ -43,7 +43,7 @@
 		<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		<script>
-			$('#logoutbtn').click(function(e) {
+			$('logoutbtn').click(function(e) {
 				e.preventDefault();
 				$.post('/logout');
 			});
