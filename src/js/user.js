@@ -115,14 +115,30 @@ function createUser(name, email, password) {
 }
 
 function insertIdea(title, description, tags, category, dateyear, datemonth, dateday, callback) {
-	connection.query("INSERT INTO idea(title, description, tags, category, date) VALUES('" + title + "', '" + description + "', '" + tags + "', '" + category + "', '" + dateyear + "-" + datemonth + "-" + dateday + "')",
+	connection.query("INSERT INTO idea(title, description, tags, category, date) VALUES('" + title + "', '" + description + "', '" + category + "', '" + dateyear + "-" + datemonth + "-" + dateday + "')",
 		function(err, result) {
 			if (err) {
 				throw err;
 			} else {
-				callback(result);
+				var tag = tags.split(";");
+					connection.query("SELECT ideaID FROM idea ORDER BY ideaID DESC LIMIT 1", function(err, result) {
+						if (err) {
+							throw err;
+						} else {
+							var i;
+							for (i = 0; i < tag.length; i++) {
+								connection.query("INSERT INTO idea_tags (ideaID, tag) VALUES('" + result[0]['ideaID'] + "', '" + tag + "')", function(err2, result2) {
+									if (err2) {
+										throw err2;
+									}
+								});
+							}
+							callback(true);
+						}
+					});
 			}
 		});
+
 }
 
 exports.checkPassword = checkPassword;
