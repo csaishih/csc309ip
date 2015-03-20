@@ -62,6 +62,10 @@ app.post('/signup', function(req, res) {
 	});
 });
 
+app.post('/logout', function(req, res) {
+	console.log("log out works");
+});
+
 app.post('/login', function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
