@@ -109,15 +109,20 @@ app.post('/submitidea', function(req, res) {
 	var dateyear = date.getFullYear();
 	var datemonth = date.getMonth() + 1;
 	var dateday = date.getDate();
-	user.insertIdea(title, description, tags, category, dateyear, datemonth, dateday, function(success) {
-		if (success) {
-			res.redirect('/');
-			console.log("Insert success");
-		} else {
-			res.redirect('/createidea');
-			console.log("Insert failed");
-		}
-	});
+
+	if (title == '' || typeof category == 'undefined') {
+		res.redirect('/createidea.html');
+	} else {
+		user.insertIdea(title, description, tags, category, dateyear, datemonth, dateday, function(success) {
+			if (success) {
+				res.redirect('/');
+				console.log("Insert success");
+			} else {
+				res.redirect('/createidea.html');
+				console.log("Insert failed");
+			}
+		});
+	}
 });
 
 io.on('connection', function(socket) {

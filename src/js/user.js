@@ -120,6 +120,10 @@ function insertIdea(title, description, tags, category, dateyear, datemonth, dat
 			if (err) {
 				throw err;
 			} else {
+				if (tags.charAt(tags.length - 1) == ';') {
+					tags = tags.substring(0, tags.length - 1);
+					console.log(tags);
+				}
 				var tag = tags.split(";");
 				connection.query("SELECT ideaID FROM idea ORDER BY ideaID DESC LIMIT 1", function(err, result) {
 					if (err) {
