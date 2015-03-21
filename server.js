@@ -106,9 +106,9 @@ app.post('/submitidea', function(req, res) {
 	var tags = req.body.tags;
 	var category = req.body.category;
 	var date = new Date();
-	var dateyear = date.getUTCFullYear();
-	var datemonth = date.getUTCMonth();
-	var dateday = date.getUTCDate();
+	var dateyear = date.getFullYear();
+	var datemonth = date.getMonth() + 1;
+	var dateday = date.getDate();
 	user.insertIdea(title, description, tags, category, dateyear, datemonth, dateday, function(success) {
 		if (success) {
 			res.redirect('/');
