@@ -114,7 +114,7 @@ function createUser(name, email, password) {
 	});
 }
 
-function insertIdea(title, description, tags, category, dateyear, datemonth, dateday, callback) {
+function insertIdea(title, description, tags, category, dateyear, datemonth, dateday, cookie, callback) {
 	connection.query("INSERT INTO idea(title, description, category, date) VALUES('" + title + "', '" + description + "', '" + category + "', '" + dateyear + "-" + datemonth + "-" + dateday + "')",
 		function(err, result) {
 			if (err) {
@@ -122,7 +122,6 @@ function insertIdea(title, description, tags, category, dateyear, datemonth, dat
 			} else {
 				if (tags.charAt(tags.length - 1) == ';') {
 					tags = tags.substring(0, tags.length - 1);
-					console.log(tags);
 				}
 				var tag = tags.split(";");
 				connection.query("SELECT ideaID FROM idea ORDER BY ideaID DESC LIMIT 1", function(err, result) {
@@ -137,12 +136,23 @@ function insertIdea(title, description, tags, category, dateyear, datemonth, dat
 								}
 							});
 						}
-						callback(true);
+						connection.query("SELECT userID FROM user WHERE email = '" + cookie + "'", function(err2, result2) {
+							if (err2) {
+								throw err2;
+							} else {
+								connection.query("INSERT INTO user_idea (userID, ideaID, initiator) VALUES('" + result2[0]['userID'] + "', '" + result[0]['ideaID'] + "', '1')", function(err3, result3) {
+									if (err3) {
+										throw err3;
+									} else {
+										callback(true);
+									}
+								});
+							}
+						});
 					}
 				});
 			}
 		});
-
 }
 
 exports.checkPassword = checkPassword;

@@ -109,11 +109,12 @@ app.post('/submitidea', function(req, res) {
 	var dateyear = date.getFullYear();
 	var datemonth = date.getMonth() + 1;
 	var dateday = date.getDate();
+	var cookie = req.cookies.email;
 
 	if (title == '' || typeof category == 'undefined') {
 		res.redirect('/createidea.html');
 	} else {
-		user.insertIdea(title, description, tags, category, dateyear, datemonth, dateday, function(success) {
+		user.insertIdea(title, description, tags, category, dateyear, datemonth, dateday, cookie, function(success) {
 			if (success) {
 				res.redirect('/');
 				console.log("Insert success");
