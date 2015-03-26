@@ -75,9 +75,9 @@ function createUser(name, email, password) {
 	});
 }
 
-function createIdea(title, description, tags, category, cookie) {
+function createIdea(title, description, tags, category, email) {
 	User.findOne({
-		'login.email': cookie
+		'login.email': email
 	}, function(err, result) {
 		if (err) {
 			throw err;
@@ -105,9 +105,50 @@ function createIdea(title, description, tags, category, cookie) {
 	});
 }
 
+function getUserIdeas(email, callback) {
+	User.findOne({
+		'login.email': email
+	}, function(err, result) {
+		if (err) {
+			throw err;
+		} else {
+			Idea.find({
+				'author.id': result._id
+			}, function(err2, result2) {
+				if (err) {
+					throw err;
+				} else {
+					callback(result2);
+				}
+			});
+		}
+	});
+}
+
+function getOtherIdeas(email, callback) {
+	User.findOne({
+		'login.email': email
+	}, function(err, result) {
+		if (err) {
+			throw err;
+		} else {
+			Idea.find({
+				'author.id': {$ne: result._id}
+			}, function(err2, result2) {
+				if (err) {
+					throw err;
+				} else {
+					callback(result2);
+				}
+			});
+		}
+	});
+}
 exports.checkPassword = checkPassword;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
 exports.authenticateLogin = authenticateLogin;
 exports.createUser = createUser;
 exports.createIdea = createIdea;
+exports.getUserIdeas = getUserIdeas;
+exports.getOtherIdeas = getOtherIdeas;

@@ -1,8 +1,13 @@
-var myApp = angular.module('csc309ip', []);
-myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
-    console.log("Hello World from controller");
+var main = angular.module('main', []);
+main.controller('MainController', ['$scope', '$http', function($scope, $http) {
+  console.log("Hello World from controller");
+    var refresh = function() {
+      $http.get('/getUserIdeas').success(function(response) {
 
-
+      });
+    };
+}]);﻿
+/*
 var refresh = function() {
   $http.get('/contactlist').success(function(response) {
     console.log("I got the data I requested");
@@ -45,5 +50,4 @@ $scope.update = function() {
 $scope.deselect = function() {
   $scope.contact = "";
 }
-
-}]);﻿
+*/

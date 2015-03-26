@@ -20,7 +20,7 @@ app.get('/', function(req, res) {
 	var cookie = req.cookies.email;
 	Auth.authenticateEmail(cookie, function(result) {
 		if (result) {
-			res.sendFile('src/html/mainpage.html', {root: __dirname});
+			res.sendFile('src/html/main.html', {root: __dirname});
 		} else {
 			res.sendFile('src/html/root.html', {root: __dirname});
 		}
@@ -43,8 +43,8 @@ app.get('/signup.html', function(req, res) {
 });
 
 //Main page
-app.get('/mainpage.html', function(req, res) {
-	res.sendFile('src/html/mainpage.html', {root: __dirname});
+app.get('/main.html', function(req, res) {
+	res.sendFile('src/html/main.html', {root: __dirname});
 });
 
 app.get('/createidea.html', function(req, res) {
@@ -76,7 +76,7 @@ app.post('/login', function(req, res) {
 				maxAge: 604800000
 			});
 			console.log("Auth.authenticateLogin: Pass");
-			res.redirect('/mainpage.html');
+			res.redirect('/main.html');
 		} else {
 			console.log("Auth.authenticateLogin: Fail");
 			res.redirect('/login.html');
@@ -98,16 +98,30 @@ app.post('/submitidea', function(req, res) {
 	var description = req.body.description;
 	var tags = req.body.tags;
 	var category = req.body.category;
-	var cookie = req.cookies.email;
+	var email = req.cookies.email;
 
 	if (title == '' || typeof category == 'undefined') {
 		console.log("Auth.createIdea: Fail");
 		res.redirect('/createidea.html');
 	} else {
-		Auth.createIdea(title, description, tags, category, cookie);
+		Auth.createIdea(title, description, tags, category, email);
 		console.log("Auth.createIdea: Pass");
 		res.redirect('/');
 	}
+});
+
+app.get('/getUserIdeas', function(req, res) {
+	var cookie = req.cookies.email;
+	Auth.getUserIdeas(cookie, function(result) {
+		res.json(result);
+	});
+});
+
+app.get('/getOtherIdeas', function(req, res) {
+	var cookie = req.cookies.email;
+	Auth.getOtherIdeas(cookie, function(result) {
+		res.json(result);
+	});
 });
 
 console.log("App is running");
