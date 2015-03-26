@@ -24,27 +24,55 @@
 			</div>
 		</nav>
 		<div id="controller" ng-controller="MainController">
-			<div id="userideas">
-				<h6>Your ideas</h6>
-				<ul ng-repeat="idea in userIdeas">
-					<li>{{idea.title}}</li>
-					<li>{{idea.description}}</li>
-					<li>{{idea.category}}</li>
-					<li>{{idea.tags}}</li>
-					<li>{{idea.rating.likes}}</li>
-					<li>{{idea.rating.dislikes}}</li>
-				</ul>
+			<div class="panel panel-default" id="userideas">
+				<div class="panel-heading">Your ideas</div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Title</th>
+							<th>Description</th>
+							<th>Category</th>
+							<th>Tags</th>
+							<th>Likes</th>
+							<th>Dislikes</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="idea in userIdeas">
+							<td>{{idea.title}}</td>
+							<td>{{idea.description}}</td>
+							<td>{{idea.category}}</td>
+							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags" disabled>{{tag}}</button></td>
+							<td>{{idea.rating.likes}}</td>
+							<td>{{idea.rating.dislikes}}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			<div id="otherideas">
-				<h6>Ideas</h6>
-				<ul ng-repeat="idea in otherIdeas">
-					<li>{{idea.title}}</li>
-					<li>{{idea.description}}</li>
-					<li>{{idea.category}}</li>
-					<li>{{idea.tags}}</li>
-					<li>{{idea.rating.likes}}</li>
-					<li>{{idea.rating.dislikes}}</li>
-				</ul>
+			<div class="panel panel-default" id="otherideas">
+				<div class="panel-heading">Other ideas</div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Title</th>
+							<th>Description</th>
+							<th>Category</th>
+							<th>Tags</th>
+							<th>Likes</th>
+							<th>Dislikes</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="idea in otherIdeas">
+							<td>{{idea.title}}</td>
+							<td>{{idea.description}}</td>
+							<td>{{idea.category}}</td>
+							<td><button class="btn" ng-repeat="tag in idea.tags" disabled>{{tag}}</button></td>
+							<td>{{idea.rating.likes}}</td>
+							<td>{{idea.rating.dislikes}}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 		<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
