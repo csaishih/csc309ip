@@ -1,6 +1,6 @@
 var bcrypt = require('bcrypt');
-var User = require('../models/user');
-var Idea = require('../models/idea');
+var User = require('./models/user');
+var Idea = require('./models/idea');
 
 
 

@@ -3,9 +3,9 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var app = express();
-var User = require('./models/user');
-var Idea = require('./models/idea');
-var Auth = require('./src/js/authenticate')
+var User = require('./src/models/user');
+var Idea = require('./src/models/idea');
+var Auth = require('./src/authenticate')
 
 mongoose.connect('mongodb://localhost/restful');
 
