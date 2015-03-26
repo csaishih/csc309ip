@@ -2,8 +2,6 @@ var bcrypt = require('bcrypt');
 var User = require('./models/user');
 var Idea = require('./models/idea');
 
-
-
 function checkPassword(password, repassword) {
 	if (password.length > 4) {
 		return password == repassword;
@@ -32,7 +30,6 @@ function authenticateSignUp(email, password, repassword, callback) {
 		}
 	});
 }
-
 
 function authenticateLogin(email, password, callback) {
 	User.findOne({

@@ -2,10 +2,10 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-var app = express();
 var User = require('./src/models/user');
 var Idea = require('./src/models/idea');
 var Auth = require('./src/authenticate')
+var app = express();
 
 mongoose.connect('mongodb://localhost/restful');
 
@@ -110,5 +110,5 @@ app.post('/submitidea', function(req, res) {
 	}
 });
 
-console.log("Running on port 8080");
+console.log("App is running");
 app.listen(8080);
