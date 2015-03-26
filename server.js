@@ -1,25 +1,27 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-var user = require('./src/js/user');
 var app = express();
 var server = app.listen(8080);
 var io = require('socket.io').listen(server);
+var User = require('./models/user');
+var Idea = require('./models/idea');
+var Auth = require('./src/js/authenticate')
 
-//For parsing body
-app.use(bodyParser.urlencoded({ extended: false}));
+mongoose.connect('mongodb://localhost/restful');
 
-//For parsing cookies
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.json());
 
-//For serving static files
-app.use("/src", express.static(__dirname + "/src"));
+app.use('/api', require('./src/routes/api'));
+app.use('/src', express.static(__dirname + '/src'));
 
-//Root page
 app.get('/', function(req, res) {
 	var cookie = req.cookies.email;
-	user.authenticateEmail(cookie, function(success) {
-		if (success) {
+	Auth.authenticateEmail(cookie, function(result) {
+		if (result) {
 			res.sendFile('src/html/mainpage.html', {root: __dirname});
 		} else {
 			res.sendFile('src/html/root.html', {root: __dirname});
@@ -52,20 +54,34 @@ app.get('/createidea.html', function(req, res) {
 });
 
 app.post('/signup', function(req, res) {
-	var name = req.body.name;
 	var email = req.body.email;
 	var password = req.body.password;
 	var repassword = req.body.repassword;
-
-	//Authenticate signup
-	user.authenticateSignUp(email, password, repassword, function(success) {
-		if (success) {
-			user.createUser(name, email, password);
+	Auth.authenticateSignUp(req.body.email, req.body.password, req.body.repassword, function(result) {
+		if (result) {
+			Auth.createUser(req.body.name, req.body.email, req.body.password);
+			console.log('Auth.authenticateSignUp: Pass');
 			res.redirect('/login.html');
 		} else {
-			//Authentication failed
-			console.log("Sign up failed");
+			console.log('Auth.authenticateSignUp: Fail');
 			res.redirect('/signup.html');
+		}
+	});
+});
+
+app.post('/login', function(req, res) {
+	Auth.authenticateLogin(req.body.email, req.body.password, function(result) {
+		if (result) {
+			res.cookie("email", req.body.email, {
+				path: '/',
+				httpOnly: true,
+				maxAge: 604800000
+			});
+			console.log("Auth.authenticateLogin: Pass");
+			res.redirect('/mainpage.html');
+		} else {
+			console.log("Auth.authenticateLogin: Fail");
+			res.redirect('/login.html');
 		}
 	});
 });
@@ -79,57 +95,21 @@ app.post('/createidea', function(req, res) {
 	res.redirect('/createidea.html');
 });
 
-app.post('/login', function(req, res) {
-	var email = req.body.email;
-	var password = req.body.password;
-	user.authenticateLogin(email, password, function(success) {
-		if (success) {
-			//Successful login
-			res.cookie("email", email, {
-				path: '/',
-				httpOnly: true,
-				maxAge: 604800000
-			});
-			console.log("Successful login");
-			res.redirect('/mainpage.html');
-		} else {
-			//Authentication failed
-			console.log("Login failed");
-			res.redirect('/login.html');
-		}
-	});
-});
-
 app.post('/submitidea', function(req, res) {
 	var title = req.body.title;
 	var description = req.body.description;
 	var tags = req.body.tags;
 	var category = req.body.category;
-	var date = new Date();
-	var dateyear = date.getFullYear();
-	var datemonth = date.getMonth() + 1;
-	var dateday = date.getDate();
 	var cookie = req.cookies.email;
 
 	if (title == '' || typeof category == 'undefined') {
+		console.log("Auth.createIdea: Fail");
 		res.redirect('/createidea.html');
 	} else {
-		user.insertIdea(title, description, tags, category, dateyear, datemonth, dateday, cookie, function(success) {
-			if (success) {
-				res.redirect('/');
-				console.log("Insert success");
-			} else {
-				res.redirect('/createidea.html');
-				console.log("Insert failed");
-			}
-		});
+		Auth.createIdea(title, description, tags, category, cookie);
+		console.log("Auth.createIdea: Pass");
+		res.redirect('/');
 	}
 });
 
-io.on('connection', function(socket) {
-	user.test(function(result) {
-		socket.emit('go', {
-			msg: result
-		});
-	});
-});
+console.log("Running");
