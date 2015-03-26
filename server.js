@@ -3,8 +3,6 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var app = express();
-var server = app.listen(8080);
-var io = require('socket.io').listen(server);
 var User = require('./models/user');
 var Idea = require('./models/idea');
 var Auth = require('./src/js/authenticate')
@@ -112,4 +110,5 @@ app.post('/submitidea', function(req, res) {
 	}
 });
 
-console.log("Running");
+console.log("Running on port 8080");
+app.listen(8080);
