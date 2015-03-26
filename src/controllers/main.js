@@ -11,4 +11,8 @@ main.controller('MainController', ['$scope', '$http', function($scope, $http) {
 		});
 	};
 	refresh();
+
+	$scope.sayhi  = function(id) {
+		console.log(id);
+	}
 }]);
