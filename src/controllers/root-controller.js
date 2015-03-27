@@ -1,13 +1,11 @@
-var main = angular.module('main', ['angularModalService']);
-main.controller('MainController', ['$scope', '$http', 'ModalService', '$window', function($scope, $http, ModalService, $window) {
+var root = angular.module('root', ['angularModalService']);
+root.controller('RootController', ['$scope', '$http', 'ModalService', '$window', function($scope, $http, ModalService, $window) {
 	var refresh = function() {
 		$http.get('/getUserIdeas').success(function(response) {
 			$scope.userIdeas = response;
-			console.log($scope.userIdeas);
 		});
 		$http.get('/getOtherIdeas').success(function(response) {
 			$scope.otherIdeas = response;
-			console.log($scope.otherIdeas);
 		});
 	};
 	refresh();
@@ -25,7 +23,7 @@ main.controller('MainController', ['$scope', '$http', 'ModalService', '$window',
 	$scope.create = function() {
 		ModalService.showModal({
 			templateUrl: '/src/html/modal_create.html',
-			controller: 'ModalController',
+			controller: 'RootModalController',
 			inputs: {
 				title: '',
 				description: '',
@@ -110,7 +108,7 @@ main.controller('MainController', ['$scope', '$http', 'ModalService', '$window',
 	};
 }]);
 
-main.controller('ModalController', ['$scope', '$element', 'title', 'description', 'category', 'tags', 'close', function($scope, $element, title, description, category, tags, close) {
+root.controller('RootModalController', ['$scope', '$element', 'title', 'description', 'category', 'tags', 'close', function($scope, $element, title, description, category, tags, close) {
 	$scope.title = title;
 	$scope.description = description;
 	$scope.category = category;
