@@ -6,12 +6,6 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	</head>
 	<body>
-		<style>
-			.clickable-row:hover{
-				cursor: pointer;
-				background-color: #6CC0E5;
-			}
-		</style>
 		<nav class="navbar navbar-default">
 			<div class="container">
 				<div class="navbar-header">
@@ -44,13 +38,16 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="clickable-row" ng-repeat="idea in userIdeas" ng-click="sayhi(idea._id)">
+						<tr class="clickable-row" ng-repeat="idea in userIdeas">
 							<td>{{idea.title}}</td>
 							<td>{{idea.description}}</td>
 							<td>{{idea.category}}</td>
 							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags" disabled>{{tag}}</button></td>
 							<td>{{idea.rating.likes}}</td>
 							<td>{{idea.rating.dislikes}}</td>
+							<td><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
+							<td><button class="btn btn-warning" ng-click="edit(idea._id)">Edit</button></td>
+							<td><button class="btn btn-danger" ng-click="remove(idea._id)">Remove</button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -76,6 +73,9 @@
 							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags" disabled>{{tag}}</button></td>
 							<td>{{idea.rating.likes}}</td>
 							<td>{{idea.rating.dislikes}}</td>
+							<td><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
+							<td><button class="btn btn-success" ng-click="like(idea._id)">Like</button></td>
+							<td><button class="btn btn-danger" ng-click="dislike(idea._id)">Dislike</button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -85,12 +85,5 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 		<script src="/src/controllers/main.js"></script>
-		<script>
-			jQuery(document).ready(function($) {
-				$(".clickable-row").click(function() {
-					window.document.location = $(this).data("href");
-				});
-			});
-		</script>
 	</body>
 </html>

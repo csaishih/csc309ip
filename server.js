@@ -124,5 +124,13 @@ app.get('/getOtherIdeas', function(req, res) {
 	});
 });
 
+app.delete('/idea/:id', function (req, res) {
+	var id = req.params.id;
+	Auth.deleteIdea(id, function(result) {
+		res.json(result);
+	});
+});
+
 console.log("App is running");
 app.listen(8080);
+

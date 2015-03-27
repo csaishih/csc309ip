@@ -144,6 +144,19 @@ function getOtherIdeas(email, callback) {
 		}
 	});
 }
+
+function deleteIdea(id, callback) {
+	Idea.remove({
+		'_id': id
+	}, function(err, result) {
+		if (err) {
+			throw err;
+		} else {
+			callback(result);
+		}
+	});
+}
+
 exports.checkPassword = checkPassword;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
@@ -152,3 +165,4 @@ exports.createUser = createUser;
 exports.createIdea = createIdea;
 exports.getUserIdeas = getUserIdeas;
 exports.getOtherIdeas = getOtherIdeas;
+exports.deleteIdea = deleteIdea;

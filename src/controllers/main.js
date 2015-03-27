@@ -12,7 +12,22 @@ main.controller('MainController', ['$scope', '$http', function($scope, $http) {
 	};
 	refresh();
 
-	$scope.sayhi  = function(id) {
+	$scope.view = function(id) {
 		console.log(id);
-	}
+	};
+
+	$scope.edit = function(id) {
+		console.log(id);
+	};
+
+	$scope.remove = function(id) {
+		console.log(id);
+		$http.delete('/idea/' + id).success(function(response) {
+			if (response) {
+    			refresh();
+    		} else {
+    			console.log("Delete document: Fail");
+    		}
+		});
+	};
 }]);
