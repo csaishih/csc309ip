@@ -1,6 +1,9 @@
 var main = angular.module('main', ['angularModalService']);
 main.controller('MainController', ['$scope', '$http', 'ModalService', '$window', function($scope, $http, ModalService, $window) {
 	var refresh = function() {
+		$http.get('/username').success(function(response) {
+			$scope.username = response;
+		})
 		$http.get('/getUserIdeas').success(function(response) {
 			$scope.userIdeas = response;
 		});
@@ -33,8 +36,8 @@ main.controller('MainController', ['$scope', '$http', 'ModalService', '$window',
 		}).then(function(modal) {
 			modal.element.modal();
 			modal.close.then(function(result) {
-				if (result.title == '' || result.description == '' || result. category == '' || result.tags == '' || Object.keys(result).length == 0) {
-					console.log("Error creating idea");
+				if (Object.keys(result).length == 0 || result.title == '' || result.description == '' || result. category == '' || result.tags == '') {
+					console.log("Error");
 				} else {
 					var str = "{ title: '" + result.title + "', description: '" + result.description + "', category: '" + result.category + "', tags: ['";
 					var i;
@@ -72,6 +75,7 @@ main.controller('MainController', ['$scope', '$http', 'ModalService', '$window',
 						str += result.tags[i] + "', '";
 					}
 					str = str.substring(0, str.length - 4) + "'], likes: " + likes + ", dislikes: " + dislikes + " }";
+					console.log(str);
 					var data = JSON.stringify(eval("(" + str + ")"));
 					$scope.update(id, data);
 				}
@@ -112,14 +116,18 @@ main.controller('MainController', ['$scope', '$http', 'ModalService', '$window',
 }]);
 
 main.controller('MainModalController', ['$scope', '$element', 'title', 'description', 'category', 'tags', 'close', function($scope, $element, title, description, category, tags, close) {
+	$scope.clean = function(str) {
+		return str.trim();
+	};
+
 	$scope.title = title;
 	$scope.description = description;
 	$scope.category = category;
 
-	var tag = '';
+	var tag = "";
 	var i;
 	for (i = 0; i < tags.length; i++) {
-		tag += tags[i] + ';'; 
+		tag += $scope.clean(tags[i]) + ';'; 
 	}
 
 	$scope.tags = tag.substring(0, tag.length - 1);
@@ -127,18 +135,27 @@ main.controller('MainModalController', ['$scope', '$element', 'title', 'descript
 
 	$scope.submit = function() {
 		var newTags = $scope.tags.replace(/;+/g, ";");
-		newTags = newTags.substring(0, newTags.length - 1).split(';');
+		newTags = newTags.replace(/'/g, "\\'");
 
+		if (newTags.charAt(newTags.length - 1) == ';') {
+			newTags = newTags.substring(0, newTags.length - 1).split(';');
+		} else {
+			newTags = newTags.split(';');
+		}
+		
 		$scope.title = $scope.title == '' ? title : $scope.title;
 		$scope.description = $scope.description == '' ? description : $scope.description;
 		$scope.category = $scope.category == '' ? category : $scope.category;
 
 		newTags = newTags == '' ? backup_tag.split(';') : newTags;
+		for (i = 0; i < newTags.length; i++){
+			newTags[i] = $scope.clean(newTags[i]);
+		}
 
 		close({
-			title: $scope.title,
-			description: $scope.description,
-			category: $scope.category,
+			title: $scope.clean($scope.title),
+			description: $scope.clean($scope.description),
+			category: $scope.clean($scope.category),
 			tags: newTags
 		}, 500);
 	};
@@ -147,4 +164,6 @@ main.controller('MainModalController', ['$scope', '$element', 'title', 'descript
 		$element.modal('hide');
 		close({}, 500);
 	};
+
+
 }]);

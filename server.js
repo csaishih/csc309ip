@@ -15,7 +15,6 @@ app.use(bodyParser.json());
 
 app.use('/api', require('./src/routes/api'));
 app.use('/src', express.static(__dirname + '/src'));
-app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 app.get('/', function(req, res) {
 	Auth.authenticateEmail(req.cookies.email, function(result) {
@@ -32,16 +31,6 @@ app.get('/root.html', function(req, res) {
 	res.sendFile('src/html/root.html', {root: __dirname});
 });
 
-//Login page
-app.get('/login.html', function(req, res) {
-	res.sendFile('src/html/login.html', {root: __dirname});
-});
-
-//Sign up page
-app.get('/signup.html', function(req, res) {
-	res.sendFile('src/html/signup.html', {root: __dirname});
-});
-
 //Main page
 app.get('/main.html', function(req, res) {
 	Auth.authenticateEmail(req.cookies.email, function(result) {
@@ -54,17 +43,13 @@ app.get('/main.html', function(req, res) {
 });
 
 app.post('/signup', function(req, res) {
-	var email = req.body.email;
-	var password = req.body.password;
-	var repassword = req.body.repassword;
-	Auth.authenticateSignUp(req.body.email, req.body.password, req.body.repassword, function(result) {
-		if (result) {
-			Auth.createUser(req.body.name, req.body.email, req.body.password);
-			console.log('Auth.authenticateSignUp: Pass');
-			res.redirect('/login.html');
+	Auth.authenticateSignUp(req.body.email, function(success) {
+		if (success) {
+			Auth.createUser(req.body.name, req.body.email, req.body.password, function(result) {
+				res.send(true);
+			});
 		} else {
-			console.log('Auth.authenticateSignUp: Fail');
-			res.redirect('/signup.html');
+			res.send(false);
 		}
 	});
 });
@@ -77,11 +62,9 @@ app.post('/login', function(req, res) {
 				httpOnly: true,
 				maxAge: 604800000
 			});
-			console.log("Auth.authenticateLogin: Pass");
-			res.redirect('/main.html');
+			res.send(true);
 		} else {
-			console.log("Auth.authenticateLogin: Fail");
-			res.redirect('/login.html');
+			res.send(false);
 		}
 	});
 });
@@ -98,8 +81,7 @@ app.post('/createIdea', function(req, res) {
 });
 
 app.get('/getUserIdeas', function(req, res) {
-	var cookie = req.cookies.email;
-	Auth.getUserIdeas(cookie, function(result) {
+	Auth.getUserIdeas(req.cookies.email, function(result) {
 		res.json(result);
 	});
 });
@@ -119,6 +101,12 @@ app.put('/idea/:id', function(req, res) {;
 app.delete('/idea/:id', function(req, res) {
 	Auth.deleteIdea(req.params.id, function(result) {
 		res.json(result);
+	});
+});
+
+app.get('/username', function(req, res) {
+	Auth.findUsername(req.cookies.email, function(result) {
+		res.send(result);
 	});
 });
 
