@@ -1,6 +1,5 @@
 var root = angular.module('root', ['angularModalService', 'ngAnimate', 'toastr']);
 root.controller('RootController', ['$scope', '$http', 'ModalService', '$window', 'toastr', function($scope, $http, ModalService, $window, toastr) {
-	toastr.success('hi', 'bro', {closeButton: true});
 	$scope.login = function() {
 		ModalService.showModal({
 			templateUrl: '/src/html/modal_login.html',
@@ -17,6 +16,8 @@ root.controller('RootController', ['$scope', '$http', 'ModalService', '$window',
 							$window.location.href = '/';
 						} else {
 							console.log("Error");
+							toastr.error('Error', 'Invalid email or password', {closeButton: true});
+							$scope.login();
 						}
 					});
 				}
@@ -31,26 +32,21 @@ root.controller('RootController', ['$scope', '$http', 'ModalService', '$window',
 		}).then(function(modal) {
 			modal.element.modal();
 			modal.close.then(function(result) {
-				if (Object.keys(result).length == 0 || result.name == '' || result.email == '' || result.password == '' || result.repassword == '' || !$scope.checkPassword(result.password, result.repassword)) {
-					console.log("Error");
-				} else {
-					var data = JSON.stringify(eval("({ name: '" + result.name + "', email: '" + result.email + "', password: '" + result.password + "' })"));
-					$http.post('signup', data).success(function(response) {
-						if (response) {
-							$scope.login();
-						} else {
-							console.log("Error");
-						}
-					});
-				}
+				var data = JSON.stringify(eval("({ name: '" + result.name + "', email: '" + result.email + "', password: '" + result.password + "' })"));
+				$http.post('signup', data).success(function(response) {
+					if (response) {
+						$scope.login();
+					} else {
+						console.log("Error");
+						toastr.error('Error', 'Sign up failed', {closeButton: true});
+						$scope.signup();
+					}
+				});
 			});
 		});
 	};
 
-	$scope.checkPassword = function(password, repassword) {
-		//Should check more than this
-		return password == repassword;
-	}
+
 }]);
 
 root.controller('LoginModalController', ['$scope', '$element', 'close', function($scope, $element, close) {
@@ -68,17 +64,43 @@ root.controller('LoginModalController', ['$scope', '$element', 'close', function
 }]);
 
 root.controller('SignupModalController', ['$scope', '$element', 'close', function($scope, $element, close) {
+	if ($scope.password != $scope.repassword) {
+		toastr.error('Error', 'Passwords do not match!', {closeButton: true});
+	}
 	$scope.submit = function() {
-		close({
-			name: $scope.name,
-			email: $scope.email,
-			password: $scope.password,
-			repassword: $scope.repassword
-		}, 500);
+		console.log($scope.name);
+		console.log($scope.email);
+		console.log($scope.password);
+		console.log($scope.repassword);
+		if ($scope.name == undefined) {
+			toastr.error('Error', 'Please enter your name', {closeButton: true});
+		} else if ($scope.email == undefined) {
+			toastr.error('Error', 'Please enter a valid email', {closeButton: true});
+		} else if ($scope.password == undefined) {
+			toastr.error('Error', 'Please enter your password', {closeButton: true});
+		} else if (!$scope.checkPassword($scope.password, $scope.repassword)) {
+			toastr.error('Error', 'Passwords do not match!', {closeButton: true});
+		} else {
+			console.log("It got here");
+			close({
+				name: $scope.name,
+				email: $scope.email,
+				password: $scope.password,
+				repassword: $scope.repassword
+			}, 500);
+		}
 	};
 
 	$scope.cancel = function() {
 		$element.modal('hide');
 		close({}, 500);
 	};
+
+	$scope.checkPassword = function(password, repassword) {
+		//Should check more than this
+		if (password != repassword) {
+			toastr.error('Error', 'Passwords do not match!', {closeButton: true});
+		}
+		return password == repassword;
+	}
 }]);
