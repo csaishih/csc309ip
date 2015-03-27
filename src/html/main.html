@@ -60,6 +60,7 @@
 							<th>Tags</th>
 							<th>Likes</th>
 							<th>Dislikes</th>
+							<th>Author</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -70,6 +71,7 @@
 							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags" disabled>{{tag}}</button></td>
 							<td>{{idea.rating.likes}}</td>
 							<td>{{idea.rating.dislikes}}</td>
+							<td>{{idea.author.name}}</td>
 							<td><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
 							<td><button class="btn btn-success" ng-click="like(idea._id)">Like</button></td>
 							<td><button class="btn btn-danger" ng-click="dislike(idea._id)">Dislike</button></td>

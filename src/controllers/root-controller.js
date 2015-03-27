@@ -1,5 +1,6 @@
-var root = angular.module('root', ['angularModalService']);
-root.controller('RootController', ['$scope', '$http', 'ModalService', '$window', function($scope, $http, ModalService, $window) {
+var root = angular.module('root', ['angularModalService', 'ngAnimate', 'toastr']);
+root.controller('RootController', ['$scope', '$http', 'ModalService', '$window', 'toastr', function($scope, $http, ModalService, $window, toastr) {
+	toastr.success('hi', 'bro', {closeButton: true});
 	$scope.login = function() {
 		ModalService.showModal({
 			templateUrl: '/src/html/modal_login.html',
@@ -47,6 +48,7 @@ root.controller('RootController', ['$scope', '$http', 'ModalService', '$window',
 	};
 
 	$scope.checkPassword = function(password, repassword) {
+		//Should check more than this
 		return password == repassword;
 	}
 }]);

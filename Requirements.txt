@@ -21,6 +21,7 @@ Features
 	- User can see details of a specific idea (an individual page for each idea is expected)
 	- User can express preference in favor or against an idea (like or dislike function)
 	- Filter
+	- Alerts/Notifications
 	- Generate graph
 	- Clean up CSS
 	- Comments
