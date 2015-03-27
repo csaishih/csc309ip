@@ -115,8 +115,8 @@ function getUserIdeas(email, callback) {
 			Idea.find({
 				'author.id': result._id
 			}, function(err2, result2) {
-				if (err) {
-					throw err;
+				if (err2) {
+					throw err2;
 				} else {
 					callback(result2);
 				}
@@ -157,6 +157,31 @@ function deleteIdea(id, callback) {
 	});
 }
 
+function updateIdea(id, title, description, category, tags, likes, dislikes, callback) {
+	Idea.findOneAndUpdate({
+		'_id': id
+	},
+	{
+		$set: {
+			'title': title,
+			'description': description,
+			'category': category,
+			'tags': tags,
+			'rating.likes': likes,
+			'rating.dislikes': dislikes
+		}
+	},
+	{
+		new: true
+	}, function(err, result) {
+		if (err) {
+			throw err;
+		} else {
+			callback(result);
+		}
+	});
+}
+
 exports.checkPassword = checkPassword;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
@@ -166,3 +191,4 @@ exports.createIdea = createIdea;
 exports.getUserIdeas = getUserIdeas;
 exports.getOtherIdeas = getOtherIdeas;
 exports.deleteIdea = deleteIdea;
+exports.updateIdea = updateIdea;

@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 
 app.use('/api', require('./src/routes/api'));
 app.use('/src', express.static(__dirname + '/src'));
+app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 app.get('/', function(req, res) {
 	var cookie = req.cookies.email;
@@ -124,13 +125,17 @@ app.get('/getOtherIdeas', function(req, res) {
 	});
 });
 
-app.delete('/idea/:id', function (req, res) {
-	var id = req.params.id;
-	Auth.deleteIdea(id, function(result) {
+app.put('/idea/:id', function(req, res) {;
+	Auth.updateIdea(req.params.id, req.body.title, req.body.description, req.body.category, req.body.tags, req.body.likes, req.body.dislikes, function(result) {
+		res.json(result);
+	});
+});
+
+app.delete('/idea/:id', function(req, res) {
+	Auth.deleteIdea(req.params.id, function(result) {
 		res.json(result);
 	});
 });
 
 console.log("App is running");
 app.listen(8080);
-
