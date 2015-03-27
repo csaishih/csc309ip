@@ -75,17 +75,13 @@ function createUser(name, email, password) {
 	});
 }
 
-function createIdea(title, description, tags, category, email) {
+function createIdea(title, description, category, tags, email, callback) {
 	User.findOne({
 		'login.email': email
 	}, function(err, result) {
 		if (err) {
 			throw err;
 		} else {
-			if (tags.charAt(tags.length - 1) == ';') {
-				tags = tags.substring(0, tags.length - 1);
-			}
-			var tag = tags.split(';');
 			new Idea({
 				author: {
 					'id': result._id,
@@ -94,11 +90,13 @@ function createIdea(title, description, tags, category, email) {
 				},
 				title: title,
 				description: description,
-				tags: tag,
+				tags: tags,
 				category: category
 			}).save(function(err, result) {
 				if (err) {
 					throw err;
+				} else {
+					callback(result);
 				}
 			});
 		}

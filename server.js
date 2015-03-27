@@ -18,8 +18,7 @@ app.use('/src', express.static(__dirname + '/src'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 app.get('/', function(req, res) {
-	var cookie = req.cookies.email;
-	Auth.authenticateEmail(cookie, function(result) {
+	Auth.authenticateEmail(req.cookies.email, function(result) {
 		if (result) {
 			res.sendFile('src/html/main.html', {root: __dirname});
 		} else {
@@ -45,11 +44,13 @@ app.get('/signup.html', function(req, res) {
 
 //Main page
 app.get('/main.html', function(req, res) {
-	res.sendFile('src/html/main.html', {root: __dirname});
-});
-
-app.get('/createidea.html', function(req, res) {
-	res.sendFile('src/html/createidea.html', {root: __dirname});
+	Auth.authenticateEmail(req.cookies.email, function(result) {
+		if (result) {
+			res.sendFile('src/html/main.html', {root: __dirname});
+		} else {
+			res.redirect('/');
+		}
+	});
 });
 
 app.post('/signup', function(req, res) {
@@ -90,25 +91,10 @@ app.post('/logout', function(req, res) {
 	res.redirect('/root.html');
 });
 
-app.post('/createidea', function(req, res) {
-	res.redirect('/createidea.html');
-});
-
-app.post('/submitidea', function(req, res) {
-	var title = req.body.title;
-	var description = req.body.description;
-	var tags = req.body.tags;
-	var category = req.body.category;
-	var email = req.cookies.email;
-
-	if (title == '' || typeof category == 'undefined') {
-		console.log("Auth.createIdea: Fail");
-		res.redirect('/createidea.html');
-	} else {
-		Auth.createIdea(title, description, tags, category, email);
-		console.log("Auth.createIdea: Pass");
-		res.redirect('/');
-	}
+app.post('/createIdea', function(req, res) {
+	Auth.createIdea(req.body.title, req.body.description, req.body.category, req.body.tags, req.cookies.email, function(result) {
+		res.json(result);
+	});
 });
 
 app.get('/getUserIdeas', function(req, res) {
@@ -119,8 +105,7 @@ app.get('/getUserIdeas', function(req, res) {
 });
 
 app.get('/getOtherIdeas', function(req, res) {
-	var cookie = req.cookies.email;
-	Auth.getOtherIdeas(cookie, function(result) {
+	Auth.getOtherIdeas(req.cookies.email, function(result) {
 		res.json(result);
 	});
 });

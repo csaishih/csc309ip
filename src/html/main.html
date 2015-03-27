@@ -5,25 +5,21 @@
 		<meta name="description" content="CSC309 Individual Project">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	</head>
-	<body>
+	<body id="controller" ng-app="main" ng-controller="MainController">
 		<nav class="navbar navbar-default">
 			<div class="container">
 				<div class="navbar-header">
 					<a href="/" class="navbar-brand">CSC309 Individual Project</a>
 				</div>
 				<div class="nav navbar-nav navbar-right">
-					<form method="POST" action="logout">
-						<input type="submit" class="btn btn-default navbar-btn" value="Log out"/>
-					</form>
+					<button class="btn btn-default" ng-click="logout()">Log out</button>
 				</div>
 				<div class="nav navbar-nav navbar-right">
-					<form method="POST" action="createidea">
-						<input type="submit" class="btn btn-default navbar-btn" value="Create new Idea"/>
-					</form>
+					<button class="btn btn-default" ng-click="create()">Create new Idea</button>
         		</div>
 			</div>
 		</nav>
-		<div id="controller" class="container" ng-app="main" ng-controller="MainController">
+		<div class="container">
 			<div class="panel panel-default" id="userideas">
 				<div class="panel-heading">Your ideas</div>
 				<table class="table">
