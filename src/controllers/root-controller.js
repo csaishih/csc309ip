@@ -25,23 +25,25 @@ root.controller('RootController', ['$scope', '$http', 'ModalService', '$window',
 		});
 	};
 
-	$scope.signup = function(id, title, description, category, tags, likes, dislikes) {
+	$scope.signup = function() {
 		ModalService.showModal({
 			templateUrl: '/src/html/modal_signup.html',
 			controller: 'SignupModalController'
 		}).then(function(modal) {
 			modal.element.modal();
 			modal.close.then(function(result) {
-				var data = JSON.stringify(eval("({ name: '" + result.name + "', email: '" + result.email + "', password: '" + result.password + "' })"));
-				$http.post('signup', data).success(function(response) {
-					if (response) {
-						$scope.login();
-					} else {
-						console.log("Error");
-						toastr.error('Error', 'Sign up failed', {closeButton: true});
-						$scope.signup();
-					}
-				});
+				if (Object.keys(result).length == 0) {
+					console.log("Error");
+				} else {
+					var data = JSON.stringify(eval("({ name: '" + result.name + "', email: '" + result.email + "', password: '" + result.password + "' })"));
+					$http.post('signup', data).success(function(response) {
+						if (response) {
+							$scope.login();
+						} else {
+							console.log("Cancel");
+						}
+					});
+				}
 			});
 		});
 	};
@@ -49,7 +51,7 @@ root.controller('RootController', ['$scope', '$http', 'ModalService', '$window',
 
 }]);
 
-root.controller('LoginModalController', ['$scope', '$element', 'close', function($scope, $element, close) {
+root.controller('LoginModalController', ['$scope', '$element', 'toastr', 'close', function($scope, $element, toastr, close) {
 	$scope.submit = function() {
 		close({
 			email: $scope.email,
@@ -63,25 +65,62 @@ root.controller('LoginModalController', ['$scope', '$element', 'close', function
 	};
 }]);
 
-root.controller('SignupModalController', ['$scope', '$element', 'close', function($scope, $element, close) {
-	if ($scope.password != $scope.repassword) {
-		toastr.error('Error', 'Passwords do not match!', {closeButton: true});
-	}
-	$scope.submit = function() {
-		console.log($scope.name);
-		console.log($scope.email);
-		console.log($scope.password);
-		console.log($scope.repassword);
-		if ($scope.name == undefined) {
-			toastr.error('Error', 'Please enter your name', {closeButton: true});
-		} else if ($scope.email == undefined) {
-			toastr.error('Error', 'Please enter a valid email', {closeButton: true});
-		} else if ($scope.password == undefined) {
-			toastr.error('Error', 'Please enter your password', {closeButton: true});
-		} else if (!$scope.checkPassword($scope.password, $scope.repassword)) {
-			toastr.error('Error', 'Passwords do not match!', {closeButton: true});
+root.controller('SignupModalController', ['$scope', '$element', 'toastr', 'close', function($scope, $element, toastr, close) {
+	$scope.checkErrorName = function() {
+		if ($scope.name == '' || $scope.name == undefined) {
+			toastr.error('Please enter your name', 'Error', {
+				"closeButton": true,
+				"hideDuration": "3000",
+				"timeOut": "2500"
+			});
+			return true;
 		} else {
-			console.log("It got here");
+			return false;
+		}
+	};
+
+	$scope.checkErrorEmail = function() {
+		if ($scope.email == '' || $scope.email == undefined) {
+			toastr.error('Please enter a valid email', 'Error', {
+				"closeButton": true,
+				"hideDuration": "3000",
+				"timeOut": "2500"
+			});
+			return true;
+		} else {
+			return false;
+		}		
+	};
+
+	$scope.checkErrorPassword = function() {
+		if ($scope.password == '' || $scope.password == undefined) {
+			toastr.error('Please enter your password', 'Error', {
+				"closeButton": true,
+				"hideDuration": "3000",
+				"timeOut": "2500"
+			});
+			return true;
+		} else {
+			return false;
+		}		
+	};
+
+	$scope.checkErrorRepassword = function() {
+		if ($scope.repassword == '' || $scope.repassword == undefined) {
+			toastr.error('Please re-enter your password', 'Error', {
+				"closeButton": true,
+				"hideDuration": "3000",
+				"timeOut": "2500"
+			});
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	$scope.submit = function() {
+		if (!$scope.checkErrorName() && !$scope.checkErrorEmail() && !$scope.checkErrorPassword() && !$scope.checkErrorRepassword() && $scope.checkPassword($scope.password, $scope.repassword)) {
+			console.log("pass");
 			close({
 				name: $scope.name,
 				email: $scope.email,
@@ -99,7 +138,12 @@ root.controller('SignupModalController', ['$scope', '$element', 'close', functio
 	$scope.checkPassword = function(password, repassword) {
 		//Should check more than this
 		if (password != repassword) {
-			toastr.error('Error', 'Passwords do not match!', {closeButton: true});
+			toastr.error('Passwords do not match!', 'Error', {
+				"closeButton": true,
+				"hideDuration": "3000",
+				"timeOut": "2500"
+			});
+			return false;
 		}
 		return password == repassword;
 	}
