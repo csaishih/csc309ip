@@ -37,11 +37,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="clickable-row" ng-repeat="idea in userIdeas">
+						<tr class="clickable-row" ng-repeat="idea in userIdeas track by $index">
 							<td>{{idea.title}}</td>
 							<td>{{idea.description}}</td>
 							<td>{{idea.category}}</td>
-							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags" disabled>{{tag}}</button></td>
+							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags track by $index" disabled>{{tag}}</button></td>
 							<td>{{idea.rating.likes}}</td>
 							<td>{{idea.rating.dislikes}}</td>
 							<td><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
@@ -66,11 +66,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="idea in otherIdeas">
+						<tr ng-repeat="idea in otherIdeas track by $index">
 							<td>{{idea.title}}</td>
 							<td>{{idea.description}}</td>
 							<td>{{idea.category}}</td>
-							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags" disabled>{{tag}}</button></td>
+							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags track by $index" disabled>{{tag}}</button></td>
 							<td>{{idea.rating.likes}}</td>
 							<td>{{idea.rating.dislikes}}</td>
 							<td>{{idea.author.name}}</td>

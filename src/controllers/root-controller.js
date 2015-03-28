@@ -66,13 +66,11 @@ app.controller('SignupModalController', function($scope, $modalInstance, toastr)
 	$scope.submit = function() {
 		if ($scope.checkError($scope.name)) {
 			toastr.error('Please enter your full name', 'Error');
-		} else if ($scope.checkError($scope.email)) {
-			toastr.error('Please enter a valid email', 'Error');
 		} else if ($scope.checkError($scope.password)) {
 			toastr.error('Please enter your password', 'Error');
 		} else if ($scope.checkError($scope.repassword)) {
 			toastr.error('Please re-enter your password', 'Error');
-		} else if ($scope.checkPassword($scope.password, $scope.repassword)) {
+		} else if ($scope.validateEmail($scope.email) && $scope.validatePassword($scope.password, $scope.repassword)) {
 			$modalInstance.close({
 				name: $scope.name,
 				email: $scope.email,
@@ -82,7 +80,7 @@ app.controller('SignupModalController', function($scope, $modalInstance, toastr)
 		}
 	};
 
-	$scope.checkPassword = function(password, repassword) {
+	$scope.validatePassword = function(password, repassword) {
 		if (/^[a-zA-Z0-9- ]*$/.test(password)) {
 			toastr.error('You password must contain at least one special character such as !@#$%^&*', 'Error');
 		} else if (password.length < 8) {
@@ -91,6 +89,14 @@ app.controller('SignupModalController', function($scope, $modalInstance, toastr)
 			toastr.error('Passwords do not match!', 'Error');
 		} else {
 			return password == repassword;
+		}
+	}
+
+	$scope.validateEmail = function(email) {
+		if (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(email)) {
+			return true;
+		} else {
+			toastr.error('Please enter a valid email address', 'Error');
 		}
 	}
 

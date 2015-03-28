@@ -17,10 +17,19 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 		$http.post('/logout').success(function(response) {
 			$window.location.href = '/';
 		});
-	};
+	}
 
 	$scope.view = function(id) {
-	};
+
+	}
+
+	$scope.like = function(id) {
+
+	}
+
+	$scope.dislike = function(id) {
+
+	}
 
 	$scope.create = function() {
 		var modalInstance = $modal.open({
@@ -49,7 +58,7 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 			var data = JSON.stringify(eval("(" + str + ")"));
 			$scope.update(null, data);		
 		});
-	};
+	}
 
 	$scope.edit = function(id, title, description, category, tags, likes, dislikes) {
 		var modalInstance = $modal.open({
@@ -78,7 +87,7 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 			var data = JSON.stringify(eval("(" + str + ")"));
 			$scope.update(id, data);
 		});
-	};
+	}
 
 	$scope.remove = function(id) {
 		$http.delete('/idea/' + id).success(function(response) {
@@ -88,7 +97,7 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 				console.log("Fail");
 			}
 		});
-	};
+	}
 
 	$scope.update = function(id, data) {
 		if (id == null) {
@@ -108,54 +117,67 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 				}
 			});
 		}
-	};
+	}
 });
 
 app.controller('MainModalController', function($scope, $modalInstance, toastr, input) {
+	$scope.removeDuplicates = function(source) {
+		var tag = "";
+		var i;
+		for (i = 0; i < source.length; i ++){
+			if (tag.indexOf(source[i].trim()) == -1) {
+				tag += source[i].trim() + ';';
+			}
+		}
+		return tag;
+	}
+
+	$scope.checkError = function(object) {
+		return (object === undefined || object === '' || (object[0] == '' && object.length == 1));
+	}
+
+	$scope.cancel = function() {
+		$modalInstance.dismiss('cancel');
+	}
+
 	$scope.pagetext = input.pagetext;
 	$scope.title = input.title;
 	$scope.description = input.description;
 	$scope.category = input.category;
-
-	var tag = "";
-	var i;
-	for (i = 0; i < input.tags.length; i++) {
-		tag += input.tags[i] + ';'; 
-	}
-	$scope.tags = tag.substring(0, tag.length - 1);
+	$scope.tags = $scope.removeDuplicates(input.tags);
 
 	$scope.submit = function() {
-		var newTags = $scope.tags.replace(/;+/g, ";");
-		newTags = newTags.replace(/'/g, "\\'");
-		if (newTags.charAt(newTags.length - 1) == ';') {
-			newTags = newTags.substring(0, newTags.length - 1).split(';');
-		} else {
-			newTags = newTags.split(';');
+		var correctTags = ($scope.tags.replace(/;+/g, ";")).replace(/'/g, "\\'");
+
+		if (correctTags.charAt(correctTags.length - 1) == ';') {
+			correctTags = correctTags.substring(0, correctTags.length - 1)
 		}
+
+		if (correctTags.charAt(0) == ';') {
+			correctTags = correctTags.substring(1, correctTags.length)
+		}
+
+		correctTags = correctTags.split(';');
+
+		var tags = $scope.removeDuplicates(correctTags);
+		tags = tags.substring(0, tags.length - 1).split(';');
+
 		if ($scope.checkError($scope.title)) {
-			toastr.error('Please specifiy a title', 'Error');
+			toastr.error('Please specify a title', 'Error');
 		} else if ($scope.checkError($scope.description)) {
 			toastr.error('Please enter a desciption for your idea', 'Error');
 		} else if ($scope.checkError($scope.category)) {
 			toastr.error('Please select a category for this idea', 'Error');
-		} else if ($scope.checkError(newTags)) {
+		} else if ($scope.checkError(tags)) {
 			toastr.error('Please enter some keywords/tags for your idea', 'Error');
 		} else {
 			$modalInstance.close({
 				title: $scope.title,
 				description: $scope.description,
 				category: $scope.category,
-				tags: newTags
+				tags: tags
 			});
 		}
-	};
-
-	$scope.checkError = function(object){
-		return (object === undefined || object === '');
-	}
-
-	$scope.cancel = function() {
-		$modalInstance.dismiss('cancel');
 	};
 });
 
