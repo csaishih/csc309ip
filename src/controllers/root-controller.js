@@ -2,7 +2,7 @@ var app = angular.module('root', ['ui.bootstrap', 'ngAnimate', 'toastr']);
 app.controller('RootController', function($scope, $modal, $http, $window) {
 	$scope.login = function() {
 		var modalInstance = $modal.open({
-			templateUrl: 'modal_login.html',
+			templateUrl: '/src/html/modal_login.html',
 			controller: 'LoginModalController'
 		});
 
@@ -21,7 +21,7 @@ app.controller('RootController', function($scope, $modal, $http, $window) {
 
 	$scope.signup = function() {
 		var modalInstance = $modal.open({
-			templateUrl: 'modal_signup.html',
+			templateUrl: '/src/html/modal_signup.html',
 			controller: 'SignupModalController'
 		});
 
@@ -30,6 +30,7 @@ app.controller('RootController', function($scope, $modal, $http, $window) {
 			$http.post('signup', data).success(function(response) {
 				if (response) {
 					$scope.login();
+					toastr.success('You have successfully signed up', 'Success');
 				} else {
 					toastr.error('The email address you entered is already taken', 'Error');
 				}
@@ -40,7 +41,6 @@ app.controller('RootController', function($scope, $modal, $http, $window) {
 
 app.controller('LoginModalController', function($scope, $modalInstance, toastr) {
 	$scope.submit = function() {
-		console.log($scope.password);
 		if ($scope.checkError($scope.email)) {
 			toastr.error('Please enter a valid email', 'Error');
 		} else if ($scope.checkError($scope.password)) {
@@ -83,11 +83,15 @@ app.controller('SignupModalController', function($scope, $modalInstance, toastr)
 	};
 
 	$scope.checkPassword = function(password, repassword) {
-		//Should check more than this
-		if (password != repassword) {
+		if (/^[a-zA-Z0-9- ]*$/.test(password)) {
+			toastr.error('You password must contain at least one special character such as !@#$%^&*', 'Error');
+		} else if (password.length < 8) {
+			toastr.error('You password must be at least 8 characters long', 'Error');
+		} else if (password != repassword) {
 			toastr.error('Passwords do not match!', 'Error');
+		} else {
+			return password == repassword;
 		}
-		return password == repassword;
 	}
 
 	$scope.checkError = function(object){
