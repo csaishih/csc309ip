@@ -4,7 +4,7 @@
 		<title>CSC309 Individual Project</title>
 		<meta name="description" content="CSC309 Individual Project">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="/src/angular-toastr/angular-toastr.min.css"/>
+		<link rel="stylesheet" href="http://ec2-54-175-28-150.compute-1.amazonaws.com/src/angular-toastr/angular-toastr.min.css"/>
 	</head>
 	<body id="controller" ng-app="root" ng-controller="RootController">
 		<nav class="navbar navbar-default">
@@ -18,16 +18,84 @@
 			<h4>Shihan Ai</h4>
 			<h2>CSC309 Individual Project</h2>
 			<toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
-			<button class="btn btn-default" ng-click="login()">Log in</button>
+			<button class="btn btn-default" ng-click="login(3)">Log in</button>
 			<button class="btn btn-default" ng-click="signup()">Sign up</button>
 		</div>
+		<script type="text/ng-template" id="modal_signup.html">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Sign up</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="name" class="col-sm-2 control-label">Name</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="name" placeholder="Full name" value="" ng-model="name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email" class="col-sm-2 control-label">Email</label>
+							<div class="col-sm-10">
+								<input type="email" class="form-control" id="email" placeholder="Enter a valid email address" value="" ng-model="email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-sm-2 control-label">Password</label>						
+							<div class="col-sm-10">
+								<input type="password" class="form-control" id="password" placeholder="Enter password ..." value="" ng-model="password">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="repassword" class="col-sm-2 control-label">Re-enter password</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" id="repassword" placeholder="Re-type password ..." value="" ng-model="repassword">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" ng-click="submit()" class="btn btn-primary" data-dismiss="modal">Sign up</button>
+					<button type="button" ng-click="cancel()" class="btn">Cancel</button>
+				</div>
+			</div>
+		</script>
+		<script type="text/ng-template" id="modal_login.html">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Log in</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="email" class="col-sm-2 control-label">Email</label>
+							<div class="col-sm-10">
+								<input type="email" class="form-control" id="email" placeholder="Email" value="" ng-model="email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-sm-2 control-label">Password</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" id="password" placeholder="Password" value="" ng-model="password">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" ng-click="submit()" class="btn btn-primary" data-dismiss="modal">Log in</button>
+					<button type="button" ng-click="cancel()" class="btn">Cancel</button>
+				</div>
+			</div>
+		</script>
 		<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-		<script src="https://rawgit.com/dwmkerr/angular-modal-service/master/dst/angular-modal-service.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-animate.min.js"></script>
-		<script src="/src/angular-toastr/angular-toastr.tpls.min.js"></script>
-		<script src="/src/controllers/root-controller.js"></script>
+		<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+		<script src="http://ec2-54-175-28-150.compute-1.amazonaws.com/src/angular-toastr/angular-toastr.tpls.min.js"></script>
+		<script src="http://ec2-54-175-28-150.compute-1.amazonaws.com/src/controllers/root-controller.js"></script>
 	</body>
 </html>
