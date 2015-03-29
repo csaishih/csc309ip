@@ -2,18 +2,6 @@ var bcrypt = require('bcrypt');
 var User = require('./models/user');
 var Idea = require('./models/idea');
 
-function findUsername(email, callback) {
-	User.findOne({
-		'login.email' : email
-	}, function(err, result) {
-		if (err) {
-			console.log(err);
-			throw err;
-		} else {
-			callback(result.name);
-		}
-	});
-}
 function authenticateEmail(email, callback) {
 	User.findOne({
 		'login.email' : email
@@ -202,40 +190,124 @@ function updateIdea(id, title, description, category, tags, likes, dislikes, cal
 	});
 }
 
+function findUsername(email, callback) {
+	User.findOne({
+		'login.email' : email
+	}, function(err, result) {
+		if (err) {
+			console.log(err);
+			throw err;
+		} else {
+			callback(result.name);
+		}
+	});
+}
+
 function findRating(email, id, callback) {
 	User.findOne({
 		'login.email': email,
-		'rating.likes': id
 	}, function(err, result) {
 		if (err) {
 			console.log(err);
 			throw err;
-		} else {
-			if (result) {
+		} else if (result) {
+			if ((result.rating.likes).indexOf(id) > -1) {
 				callback(1);
-			}
-		}
-	});
-	User.findOne({
-		'login.email': email,
-		'rating.dislikes': id
-	}, function(err, result) {
-		if (err) {
-			console.log(err);
-			throw err;
-		} else {
-			if (result) {
+			} else if ((result.rating.dislikes).indexOf(id) > -1) {
 				callback(-1);
+			} else {
+				callback(0);
 			}
+		} else {
+			console.log("FATAL ERROR");
+			callback(404);
 		}
 	});
-	callback(0);
 }
 
-function appendUserRating(email, rating, id, callback) {
-
+function pushUserRating(email, flag, id, callback) {
+	if (flag == 1) {
+		User.findOneAndUpdate({
+			'login.email': email
+		},
+		{
+			$push: {
+				'rating.likes': id
+			}
+		},
+		{
+			new: true
+		}, function(err, result) {
+			if (err) {
+				console.log(err);
+				throw err;
+			} else {
+				callback(result);
+			}
+		});	
+	} else if (flag == 0) {
+		User.findOneAndUpdate({
+			'login.email': email
+		},
+		{
+			$push: {
+				'rating.dislikes': id
+			}
+		},
+		{
+			new: true
+		}, function(err, result) {
+			if (err) {
+				console.log(err);
+				throw err;
+			} else {
+				callback(result);
+			}
+		});	
+	}
 }
 
+function pullUserRating(email, flag, id, callback) {
+	if (flag == 1) {
+		User.findOneAndUpdate({
+			'login.email': email
+		},
+		{
+			$pull: {
+				'rating.likes': id
+			}
+		},
+		{
+			new: true
+		}, function(err, result) {
+			if (err) {
+				console.log(err);
+				throw err;
+			} else {
+				callback(result);
+			}
+		});	
+	} else if (flag == 0) {
+		User.findOneAndUpdate({
+			'login.email': email
+		},
+		{
+			$pull: {
+				'rating.dislikes': id
+			}
+		},
+		{
+			new: true
+		}, function(err, result) {
+			if (err) {
+				console.log(err);
+				throw err;
+			} else {
+				callback(result);
+			}
+		});	
+	}
+}
 exports.findUsername = findUsername;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
@@ -247,4 +319,5 @@ exports.getOtherIdeas = getOtherIdeas;
 exports.deleteIdea = deleteIdea;
 exports.updateIdea = updateIdea;
 exports.findRating = findRating;
-exports.appendUserRating = appendUserRating;
+exports.pushUserRating = pushUserRating;
+exports.pullUserRating = pullUserRating;

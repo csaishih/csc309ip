@@ -24,47 +24,133 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 	}
 
 	$scope.like = function(id, title, description, category, tags) {
-		$http.get('/findRating/' + id).success(function(result) {
-			//1 = liked, 0 = none, -1 = disliked
-			console.log(result);
-			if (result == 0) {
+		$http.get('/findRating/' + id).success(function(response) {
+			if (response == 1) {
 				$http.put('/user/1', {
-					id: id
+					id: id,
+					flag: -1
 				}).success(function(response) {
-					console.log(response);
+					$http.put('/idea/' + id, {
+						title: title,
+						description: description,
+						category: category,
+						tags: tags,
+						likes: -1,
+						dislikes: 0
+					}).success(function(response) {
+						if (response) {
+							refresh();
+						} else {
+							console.log("error");
+						}
+					});
+				});
+			} else if (response == 0) {
+				$http.put('/user/1', {
+					id: id,
+					flag: 1
+				}).success(function(response) {
+					$http.put('/idea/' + id, {
+						title: title,
+						description: description,
+						category: category,
+						tags: tags,
+						likes: 1,
+						dislikes: 0
+					}).success(function(response) {
+						if (response) {
+							refresh();
+						} else {
+							console.log("error");
+						}
+					});
+				});
+			} else if (response == -1) {
+				$http.put('/user/1', {
+					id: id,
+					flag: 0
+				}).success(function(response) {
+					$http.put('/idea/' + id, {
+						title: title,
+						description: description,
+						category: category,
+						tags: tags,
+						likes: 1,
+						dislikes: -1
+					}).success(function(response) {
+						if (response) {
+							refresh();
+						} else {
+							console.log("error");
+						}
+					});
 				});
 			}
-			$http.put('/idea/' + id, {
-				title: title,
-				description: description,
-				category: category,
-				tags: tags,
-				likes: 1,
-				dislikes: 0
-			}).success(function(response) {
-				if (response) {
-					refresh();
-				} else {
-					console.log("Like error");
-				}
-			});
 		});
-
 	}
 
 	$scope.dislike = function(id, title, description, category, tags) {
-		$http.put('/idea/' + id, {
-			title: title,
-			description: description,
-			category: category,
-			tags: tags,
-			likes: 0,
-			dislikes: 1
-		}).success(function(response) {
-			if (response) {
-				refresh();
-			} else {
-				console.log("Like error");
+		$http.get('/findRating/' + id).success(function(response) {
+			if (response == -1) {
+				$http.put('/user/0', {
+					id: id,
+					flag: -1
+				}).success(function(response) {
+					$http.put('/idea/' + id, {
+						title: title,
+						description: description,
+						category: category,
+						tags: tags,
+						likes: 0,
+						dislikes: -1
+					}).success(function(response) {
+						if (response) {
+							refresh();
+						} else {
+							console.log("error");
+						}
+					});
+				});
+			} else if (response == 0) {
+				$http.put('/user/0', {
+					id: id,
+					flag: 1
+				}).success(function(response) {
+					$http.put('/idea/' + id, {
+						title: title,
+						description: description,
+						category: category,
+						tags: tags,
+						likes: 0,
+						dislikes: 1
+					}).success(function(response) {
+						if (response) {
+							refresh();
+						} else {
+							console.log("error");
+						}
+					});
+				});
+			} else if (response == 1) {
+				$http.put('/user/0', {
+					id: id,
+					flag: 0
+				}).success(function(response) {
+					$http.put('/idea/' + id, {
+						title: title,
+						description: description,
+						category: category,
+						tags: tags,
+						likes: -1,
+						dislikes: 1
+					}).success(function(response) {
+						if (response) {
+							refresh();
+						} else {
+							console.log("error");
+						}
+					});
+				});
 			}
 		});
 	}

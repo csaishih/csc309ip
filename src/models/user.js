@@ -23,7 +23,7 @@ var userSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
-	rated: {
+	rating: {
 		likes: [{
 			type: String,
 			index: {

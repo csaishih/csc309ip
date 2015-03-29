@@ -112,14 +112,26 @@ app.get('/username', function(req, res) {
 
 app.get('/findRating/:id', function(req, res) {
 	Auth.findRating(req.cookies.email, req.params.id, function(result) {
-		res.sendStatus(result);
+		res.json(result);
 	});
 });
 
-app.put('/user/:rating', function(req, res) {
-	Auth.appendUserRating(req.cookies.email, req.params.rating, req.body.id, function(result) {
-		res.sendStatus(result);
-	});
+app.put('/user/:flag', function(req, res) {
+	if (req.body.flag == -1) {
+		Auth.pullUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
+			res.json(result);
+		});
+	} else if (req.body.flag == 1){
+		Auth.pushUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
+			res.json(result);
+		});	
+	} else if (req.body.flag == 0) {
+		Auth.pushUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
+			Auth.pullUserRating(req.cookies.email, (1 - req.params.flag), req.body.id, function(result) {
+				res.json(result);
+			});
+		});			
+	}
 });
 
 console.log("App is running");
