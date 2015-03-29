@@ -1,5 +1,5 @@
 var app = angular.module('main', ['ui.bootstrap', 'ngAnimate', 'toastr']);
-app.controller('MainController', function($scope, $modal, $http, $window) {
+app.controller('MainController', function($scope, $modal, $http, $window, toastr) {
 	var refresh = function() {
 		$http.get('/getUser').success(function(response) {
 			$scope.username = response.name;
@@ -7,6 +7,9 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 		})
 		$http.get('/getUserIdeas').success(function(response) {
 			$scope.userIdeas = response;
+			if ($scope.userIdeas.length == 0) {
+				toastr.info('Start by creating your first idea!', 'Welcome');
+			}
 		});
 		$http.get('/getOtherIdeas').success(function(response) {
 			$scope.otherIdeas = response;

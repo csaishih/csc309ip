@@ -21,8 +21,12 @@
 		</nav>
 		<div class="container">
 			<div class="tab">
-				<div class="category red pull-left">{{category}}</div>
-				<button class="btn btn-primary pull-right" ng-click="goBack()">Go back</button>
+				<div ng-if="category == 'Health'" class="category color color-health pull-left">{{category}}</div>
+				<div ng-if="category == 'Technology'" class="category color color-technology pull-left">{{category}}</div>
+				<div ng-if="category == 'Education'" class="category color color-education pull-left">{{category}}</div>
+				<div ng-if="category == 'Finance'" class="category color color-finance pull-left">{{category}}</div>
+				<div ng-if="category == 'Travel'" class="category color color-travel pull-left">{{category}}</div>
+				<button class="btn btn-danger pull-right" ng-click="goBack()">Go back</button>
 			</div>
 			<div class="panel panel-info">
 				<div class="panel-heading">

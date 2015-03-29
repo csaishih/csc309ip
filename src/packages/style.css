@@ -20,8 +20,8 @@
 	margin-right: 5px;
 }
 
-.red {
-	background-color: #d9534f;
+.tab-color {
+	background-color: #aaa;
 	border-color: #d43f3a;
 	color: #fff;
 }
@@ -122,4 +122,18 @@ table>tbody>tr>td, .table>tbody>tr {
 
 .color-travel {
 	background-color: #d9534f;
+}
+
+.main-greeting {
+	font-size: 2.5em;
+}
+
+.main-name {
+	font-size: 4em;
+}
+
+.main-container {
+	padding: 0 30px 0 30px;
+	font-size: 3em;
+	margin-bottom: 10%;
 }
