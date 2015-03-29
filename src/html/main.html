@@ -41,7 +41,7 @@
 							<td class="col-md-1">{{idea.title}}</td>
 							<td class="col-md-3">{{idea.description}}</td>
 							<td class="col-md-1">{{idea.category}}</td>
-							<td class="col-md-2"><div class="category blue pull-left" ng-repeat="tag in idea.tags track by $index">{{tag}}</div></td>
+							<td class="col-md-2"><div class="tag category blue pull-left" ng-repeat="tag in idea.tags track by $index">{{tag}}</div></td>
 							<td class="col-md-1">{{idea.rating.likes}}</td>
 							<td class="col-md-1">{{idea.rating.dislikes}}</td>
 							<td class="pull-right"><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
@@ -70,7 +70,7 @@
 							<td class="col-md-1">{{idea.title}}</td>
 							<td class="col-md-3">{{idea.description}}</td>
 							<td class="col-md-1">{{idea.category}}</td>
-							<td class="col-md-2"><div class="category blue pull-left" ng-repeat="tag in idea.tags track by $index" disabled>{{tag}}</div></td>
+							<td class="col-md-2"><div class="tag category blue pull-left" ng-repeat="tag in idea.tags track by $index" disabled>{{tag}}</div></td>
 							<td class="col-md-1">{{idea.rating.likes}}</td>
 							<td class="col-md-1">{{idea.rating.dislikes}}</td>
 							<td class="col-md-1">{{idea.author.name}}</td>
