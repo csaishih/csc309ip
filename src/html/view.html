@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSC309 Individual Project</title>
+		<meta name="description" content="CSC309 Individual Project">
+		<link rel="stylesheet" href="/src/packages/bootstrap.min.css"/>
+		<link rel="stylesheet" href="/src/packages/angular-toastr.min.css"/>
+		<link rel="stylesheet" href="/src/packages/style.css"/>
+	</head>
+	<body id="controller" ng-app="view" ng-controller="ViewController">
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a href="/" class="navbar-brand">CSC309 Individual Project</a>
+				</div>
+				<div class="nav navbar-nav navbar-right">
+					<button class="btn btn-default" ng-click="logout()">Log out</button>
+				</div>
+				<div class="nav navbar-nav navbar-right">
+					<button class="btn btn-default" ng-click="create()">Create new Idea</button>
+        		</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="text-right date">Created on {{month}} {{day}}, {{year}}</div>
+					<div class="title">{{title}}</div>
+					<div class="text-left author">Created by: {{authorName}}</div>
+					
+				</div>
+				<div class="panel-body">{{description}}</div>
+			</div>
+		</div>
+
+		<script src="/src/packages/jquery.min.js"></script>
+		<script src="/src/packages/bootstrap.min.js"></script>
+		<script src="/src/packages/angular.min.js"></script>
+		<script src="/src/packages/angular-animate.min.js"></script>
+		<script src="/src/packages/ui-bootstrap.min.js"></script>
+		<script src="/src/packages/toastr.min.js"></script>
+		<script src="/src/packages/angular-toastr.tpls.min.js"></script>
+		<script src="/src/controllers/view-controller.js"></script>
+	</body>
+</html>

@@ -142,7 +142,22 @@ app.get('/getRatings', function(req, res) {
 
 app.get('/categoryCount', function(req, res) {
 	func.categoryCount(function(response) {
-		console.log(response);
+		res.json(response);
+	});
+});
+
+app.get('/view/:id', function(req, res) {
+	res.sendFile('src/html/view.html', {root: __dirname});
+});
+
+app.get('/getIdea/:id', function(req, res) {
+	func.getIdea(req.params.id, function(response) {
+		res.json(response);
+	});
+});
+
+app.post('/convertDate', function(req, res) {
+	func.convertDate(req.body.date, function(response) {
 		res.json(response);
 	});
 });

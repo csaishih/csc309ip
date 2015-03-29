@@ -115,12 +115,12 @@ function getUserIdeas(email, callback) {
 		} else {
 			Idea.find({
 				'author.id': result._id
-			}, function(err2, result2) {
-				if (err2) {
-					console.log(err2);
-					throw err2;
+			}, function(err, result) {
+				if (err) {
+					console.log(err);
+					throw err;
 				} else {
-					callback(result2);
+					callback(result);
 				}
 			});
 		}
@@ -137,12 +137,12 @@ function getOtherIdeas(email, callback) {
 		} else {
 			Idea.find({
 				'author.id': {$ne: result._id}
-			}, function(err2, result2) {
-				if (err2) {
-					console.log(err2);
-					throw err2;
+			}, function(err, result) {
+				if (err) {
+					console.log(err);
+					throw err;
 				} else {
-					callback(result2);
+					callback(result);
 				}
 			});
 		}
@@ -383,6 +383,31 @@ function categoryCount(callback) {
 	});
 }
 
+function getIdea(id, callback) {
+	Idea.findOne({
+		'_id': id
+	}, function(err, result) {
+		if (err) {
+			console.log(err);
+			throw err;
+		} else {
+			callback(result);
+		}
+	});
+}
+
+function convertDate(date, callback) {
+	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	var year = date.substring(0, 4);
+	var month = date.substring(5, 7);
+	var day = date.substring(8, 10);
+	callback({
+		year: year,
+		month: months[parseInt(month) - 1],
+		day: day
+	});
+}
+
 exports.findUsername = findUsername;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
@@ -398,3 +423,5 @@ exports.pushUserRating = pushUserRating;
 exports.pullUserRating = pullUserRating;
 exports.getRatings = getRatings;
 exports.categoryCount = categoryCount;
+exports.getIdea = getIdea;
+exports.convertDate = convertDate;

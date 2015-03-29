@@ -75,8 +75,8 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 		});
 	}
 
-	$scope.view = function(id, title, description, category, tags) {
-
+	$scope.view = function(id) {
+		$window.location.href = '/view/' + id;
 	}
 
 	$scope.like = function(id, title, description, category, tags) {

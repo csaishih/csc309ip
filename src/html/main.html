@@ -74,7 +74,7 @@
 							<td>{{idea.rating.likes}}</td>
 							<td>{{idea.rating.dislikes}}</td>
 							<td>{{idea.author.name}}</td>
-							<td><button class="btn btn-primary" ng-click="view(idea._id, idea.title, idea.description, idea.category, idea.tags)">View</button></td>
+							<td><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
 							<td ng-if="(ratings.likes).indexOf(idea._id) == -1"><button class="btn btn-default" ng-click="like(idea._id, idea.title, idea.description, idea.category, idea.tags)">Like</button></td>
 							<td ng-if="(ratings.likes).indexOf(idea._id) > -1"><button class="btn btn-success" ng-click="like(idea._id, idea.title, idea.description, idea.category, idea.tags)">Like</button></td>
 							<td ng-if="(ratings.dislikes).indexOf(idea._id) == -1"><button class="btn btn-default" ng-click="dislike(idea._id, idea.title, idea.description, idea.category, idea.tags)">Dislike</button></td>
