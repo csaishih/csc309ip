@@ -44,7 +44,7 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 					"title": "Number of ideas",
 					"integersOnly": true
 				}],
-				"startDuration": 1,
+				"startDuration": 0,
 				"graphs": [{
 					"balloonText": "<b>[[category]]: [[value]]</b>",
 					"fillColorsField": "color",
@@ -64,7 +64,7 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 					"labelRotation": 45
 				},
 				"amExport":{}
-				});
+			});
 		});
 	};
 	refresh();
