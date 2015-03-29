@@ -32,6 +32,7 @@ app.controller('RootController', function($scope, $modal, $http, $window) {
 					$scope.login();
 					toastr.success('You have successfully signed up', 'Success');
 				} else {
+					$scope.signup();
 					toastr.error('The email address you entered is already taken', 'Error');
 				}
 			});

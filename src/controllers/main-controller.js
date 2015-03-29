@@ -1,8 +1,9 @@
 var app = angular.module('main', ['ui.bootstrap', 'ngAnimate', 'toastr']);
 app.controller('MainController', function($scope, $modal, $http, $window) {
 	var refresh = function() {
-		$http.get('/username').success(function(response) {
-			$scope.username = response;
+		$http.get('/getUser').success(function(response) {
+			$scope.username = response.name;
+			$scope.categoryPreference = response.categoryPreference;
 		})
 		$http.get('/getUserIdeas').success(function(response) {
 			$scope.userIdeas = response;
@@ -20,23 +21,23 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 				"dataProvider": [{
 					"category": "Health",
 					"visits": response.health,
-					"color": "#FF0F00"
+					"color": "#337ab7"
 				}, {
 					"category": "Technology",
 					"visits": response.technology,
-					"color": "#FF6600"
+					"color": "#5cb85c"
 				}, {
 					"category": "Education",
 					"visits": response.education,
-					"color": "#FF9E01"
+					"color": "#5bc0de"
 				}, {
 					"category": "Finance",
 					"visits": response.finance,
-					"color": "#FCD202"
+					"color": "#f0ad4e"
 				}, {
 					"category": "Travel",
 					"visits": response.travel,
-					"color": "#F8FF01"
+					"color": "#d9534f"
 				}],
 				"valueAxes": [{
 					"axisAlpha": 0,
@@ -68,6 +69,26 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 		});
 	};
 	refresh();
+
+	$scope.toggle = function(category) {
+		if (($scope.categoryPreference).indexOf(category) > -1) {
+			//remove
+			$http.put('/updateCategory', {
+				category: category,
+				flag: 0
+			}).success(function(response) {
+				refresh();
+			});
+		} else {
+			//add
+			$http.put('/updateCategory', {
+				category: category,
+				flag: 1
+			}).success(function(response) {
+				refresh();
+			});
+		}
+	}
 
 	$scope.logout = function() {
 		$http.post('/logout').success(function(response) {

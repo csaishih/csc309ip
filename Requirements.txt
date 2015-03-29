@@ -25,4 +25,3 @@ Features
 	x- Generate graph
 	- Clean up CSS
 	- Comments
-	- Removing idea -> remove from user's ratings

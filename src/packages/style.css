@@ -71,12 +71,12 @@
 }
 
 .panel-default>.panel-heading {
-	border-color: green;
+	border-color: #aaa;
 }
 
 .panel-info > .panel-heading {
-	color: #eee;
-	background-color: #6cc0e5;
+	color: #CCE0EB;
+	background-color: #006699;
 }
 
 table, table>thead, table>thead>tr, table>thead>tr>th, .table, .table>thead, .table>thead>tr, .table>thead>tr>th {
@@ -94,4 +94,32 @@ table>tbody>tr>td, .table>tbody>tr {
 
 .table>tbody>tr>td {
 	border: 0;
+}
+
+.color, .color:hover, .color:focus {
+	color: #fff;
+}
+
+.blank {
+	color: #bbb;
+}
+
+.color-health {
+	background-color: #337ab7;
+}
+
+.color-technology {
+	background-color: #5cb85c;
+}
+
+.color-education {
+	background-color: #5bc0de;
+}
+
+.color-finance {
+	background-color: #f0ad4e;
+}
+
+.color-travel {
+	background-color: #d9534f;
 }

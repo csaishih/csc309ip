@@ -23,8 +23,10 @@
 		</nav>
 		<div class="container">
 			<div class="greeting tab">Hello, {{username}}</div>
-			<div class="panel panel-default" id="userideas">
-				<div class="panel-heading"><b>Your ideas</b></div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="btn disabled"><b>Your ideas</b></div>
+				</div>
 				<table class="table">
 					<thead>
 						<tr>
@@ -34,16 +36,18 @@
 							<th>Tags</th>
 							<th>Likes</th>
 							<th>Dislikes</th>
+							<th>Date created</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="idea in userIdeas track by $index">
 							<td class="col-md-1">{{idea.title}}</td>
-							<td class="col-md-3">{{idea.description}}</td>
+							<td class="col-md-2">{{idea.description}}</td>
 							<td class="col-md-1">{{idea.category}}</td>
 							<td class="col-md-2"><div class="tag category blue pull-left" ng-repeat="tag in idea.tags track by $index">{{tag}}</div></td>
 							<td class="col-md-1">{{idea.rating.likes}}</td>
 							<td class="col-md-1">{{idea.rating.dislikes}}</td>
+							<td class="col-md-1">{{idea.parsedDate}}</td>
 							<td class="pull-right"><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
 							<td class="pull-right"><button class="btn btn-danger" ng-click="remove(idea._id, idea.title, idea.description, idea.category, idea.tags)">Remove</button></td>
 							<td class="pull-right"><button class="btn btn-warning" ng-click="edit(idea._id, idea.title, idea.description, idea.category, idea.tags, idea.rating.likes, idea.rating.dislikes)">Edit</button></td>
@@ -51,8 +55,21 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="panel panel-default" id="otherideas">
-				<div class="panel-heading"><b>Other ideas</b></div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="btn disabled"><b>Other ideas</b></div>
+					<button ng-if="(categoryPreference).indexOf('Travel') > -1" class="btn tag pull-right color color-travel" ng-click="toggle('Travel')">Travel</button>
+					<button ng-if="(categoryPreference).indexOf('Travel') == -1" class="btn tag pull-right blank" ng-click="toggle('Travel')">Travel</button>
+					<button ng-if="(categoryPreference).indexOf('Finance') > -1" class="btn tag pull-right color color-finance" ng-click="toggle('Finance')">Finance</button>
+					<button ng-if="(categoryPreference).indexOf('Finance') == -1" class="btn tag pull-right blank" ng-click="toggle('Finance')">Finance</button>
+					<button ng-if="(categoryPreference).indexOf('Education') > -1" class="btn tag pull-right color color-education" ng-click="toggle('Education')">Education</button>
+					<button ng-if="(categoryPreference).indexOf('Education') == -1" class="btn tag pull-right blank" ng-click="toggle('Education')">Education</button>
+					<button ng-if="(categoryPreference).indexOf('Technology') > -1" class="btn tag pull-right color color-technology" ng-click="toggle('Technology')">Technology</button>
+					<button ng-if="(categoryPreference).indexOf('Technology') == -1" class="btn tag pull-right blank" ng-click="toggle('Technology')">Technology</button>
+					<button ng-if="(categoryPreference).indexOf('Health') > -1" class="btn tag pull-right color color-health" ng-click="toggle('Health')">Health</button>
+					<button ng-if="(categoryPreference).indexOf('Health') == -1" class="btn tag pull-right blank" ng-click="toggle('Health')">Health</button>
+					<div class="btn disabled pull-right">Displaying:</div>
+				</div>
 				<table class="table">
 					<thead>
 						<tr>
@@ -62,17 +79,19 @@
 							<th>Tags</th>
 							<th>Likes</th>
 							<th>Dislikes</th>
+							<th>Date created</th>
 							<th>Author</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="idea in otherIdeas track by $index">
 							<td class="col-md-1">{{idea.title}}</td>
-							<td class="col-md-3">{{idea.description}}</td>
+							<td class="col-md-2">{{idea.description}}</td>
 							<td class="col-md-1">{{idea.category}}</td>
 							<td class="col-md-2"><div class="tag category blue pull-left" ng-repeat="tag in idea.tags track by $index" disabled>{{tag}}</div></td>
 							<td class="col-md-1">{{idea.rating.likes}}</td>
 							<td class="col-md-1">{{idea.rating.dislikes}}</td>
+							<td class="col-md-1">{{idea.parsedDate}}</td>
 							<td class="col-md-1">{{idea.author.name}}</td>
 							<td class="pull-right"><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
 							<td class="pull-right" ng-if="(ratings.dislikes).indexOf(idea._id) == -1"><button class="btn btn-default" ng-click="dislike(idea._id, idea.title, idea.description, idea.category, idea.tags)">Dislike</button></td>

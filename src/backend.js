@@ -90,6 +90,7 @@ function createIdea(title, description, category, tags, email, callback) {
 					'email': result.login.email
 				},
 				title: title,
+				normalized: title.toLowerCase(),
 				description: description,
 				tags: tags,
 				category: category
@@ -136,7 +137,8 @@ function getOtherIdeas(email, callback) {
 			throw err;
 		} else {
 			Idea.find({
-				'author.id': {$ne: result._id}
+				'author.id': {$ne: result._id},
+				'category': {$in: result.categoryPreference}
 			}, function(err, result) {
 				if (err) {
 					console.log(err);
@@ -186,19 +188,6 @@ function updateIdea(id, title, description, category, tags, likes, dislikes, cal
 			throw err;
 		} else {
 			callback(result);
-		}
-	});
-}
-
-function findUsername(email, callback) {
-	User.findOne({
-		'login.email' : email
-	}, function(err, result) {
-		if (err) {
-			console.log(err);
-			throw err;
-		} else {
-			callback(result.name);
 		}
 	});
 }
@@ -396,24 +385,68 @@ function getIdea(id, callback) {
 	});
 }
 
-function convertDate(date, callback) {
-	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	var year = date.substring(0, 4);
-	var month = date.substring(5, 7);
-	var day = date.substring(8, 10);
-	callback({
-		year: year,
-		month: months[parseInt(month) - 1],
-		day: day
+function getUser(email, callback) {
+	User.findOne({
+		'login.email': email
+	}, function(err, result) {
+		if (err) {
+			console.log(err);
+			throw err;
+		} else {
+			callback(result);
+		}
 	});
 }
 
-exports.findUsername = findUsername;
+function updateCategory(email, category, flag, callback) {
+	if (flag == 1) {
+		User.findOneAndUpdate({
+			'login.email': email
+		},
+		{
+			$push: {
+				'categoryPreference': category
+			}
+		},
+		{
+			new: true
+		}, function(err, result) {
+			if (err) {
+				console.log(err);
+				throw err;
+			} else {
+				callback(result);
+			}
+		});	
+	} else if (flag == 0) {
+		User.findOneAndUpdate({
+			'login.email': email
+		},
+		{
+			$pull: {
+				'categoryPreference': category
+			}
+		},
+		{
+			new: true
+		}, function(err, result) {
+			if (err) {
+				console.log(err);
+				throw err;
+			} else {
+				callback(result);
+			}
+		});
+	}
+}
+
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
 exports.authenticateLogin = authenticateLogin;
 exports.createUser = createUser;
 exports.createIdea = createIdea;
+exports.getIdea = getIdea;
+exports.getUser = getUser;
 exports.getUserIdeas = getUserIdeas;
 exports.getOtherIdeas = getOtherIdeas;
 exports.deleteIdea = deleteIdea;
@@ -423,5 +456,4 @@ exports.pushUserRating = pushUserRating;
 exports.pullUserRating = pullUserRating;
 exports.getRatings = getRatings;
 exports.categoryCount = categoryCount;
-exports.getIdea = getIdea;
-exports.convertDate = convertDate;
+exports.updateCategory = updateCategory;

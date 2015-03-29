@@ -104,8 +104,8 @@ app.delete('/idea/:id', function(req, res) {
 	});
 });
 
-app.get('/username', function(req, res) {
-	func.findUsername(req.cookies.email, function(result) {
+app.get('/getUser', function(req, res) {
+	func.getUser(req.cookies.email, function(result) {
 		res.send(result);
 	});
 });
@@ -156,8 +156,8 @@ app.get('/getIdea/:id', function(req, res) {
 	});
 });
 
-app.post('/convertDate', function(req, res) {
-	func.convertDate(req.body.date, function(response) {
+app.put('/updateCategory', function(req, res) {
+	func.updateCategory(req.cookies.email, req.body.category, req.body.flag, function(response) {
 		res.json(response);
 	});
 });

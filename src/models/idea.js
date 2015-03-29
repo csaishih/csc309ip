@@ -1,6 +1,13 @@
 var restful = require('node-restful');
 var mongoose = restful.mongoose;
 
+var date = new Date();
+var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+var year = date.getFullYear();
+var month = date.getMonth();
+var day = date.getDate();
+var parsedDate = months[month] + ' ' + day + ', ' + year;
+
 var ideaSchema = new mongoose.Schema({
 	author: {
 		id: String,
@@ -8,6 +15,10 @@ var ideaSchema = new mongoose.Schema({
 		email: String
 	},
 	title: {
+		type: String,
+		required: true
+	},
+	normalized: {
 		type: String,
 		required: true
 	},
@@ -23,6 +34,10 @@ var ideaSchema = new mongoose.Schema({
 	date: {
 		type: Date,
 		default: Date.now
+	},
+	parsedDate: {
+		type: String,
+		default: parsedDate
 	},
 	rating: {
 		likes: {

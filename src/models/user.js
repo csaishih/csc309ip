@@ -1,6 +1,13 @@
 var restful = require('node-restful');
 var mongoose = restful.mongoose;
 
+var date = new Date();
+var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+var year = date.getFullYear();
+var month = date.getMonth();
+var day = date.getDate();
+var parsedDate = months[month] + ' ' + day + ', ' + year;
+
 var userSchema = new mongoose.Schema({
 	name: {
 		type: String,
@@ -23,6 +30,10 @@ var userSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
+	parsedDate: {
+		type: String,
+		default: parsedDate
+	},
 	rating: {
 		likes: [{
 			type: String,
@@ -38,6 +49,10 @@ var userSchema = new mongoose.Schema({
 			},
 			default: []
 		}]
+	},
+	categoryPreference: {
+		type: Array,
+		default: ["Health", "Technology", "Education", "Finance", "Travel"]
 	}
 }, {
 	versionKey: false
