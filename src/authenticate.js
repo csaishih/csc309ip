@@ -308,6 +308,20 @@ function pullUserRating(email, flag, id, callback) {
 		});	
 	}
 }
+
+function getRatings(email, callback) {
+	User.findOne({
+		'login.email': email,
+	}, function(err, result) {
+		if (err) {
+			console.log(err);
+			throw err;
+		} else {
+			callback(result.rating);
+		}
+	});
+}
+
 exports.findUsername = findUsername;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
@@ -321,3 +335,4 @@ exports.updateIdea = updateIdea;
 exports.findRating = findRating;
 exports.pushUserRating = pushUserRating;
 exports.pullUserRating = pullUserRating;
+exports.getRatings = getRatings;

@@ -134,5 +134,11 @@ app.put('/user/:flag', function(req, res) {
 	}
 });
 
+app.get('/getRatings', function(req, res) {
+	Auth.getRatings(req.cookies.email, function(result) {
+		res.json(result);
+	});
+});
+
 console.log("App is running");
 app.listen(8080);

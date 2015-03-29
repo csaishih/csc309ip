@@ -10,6 +10,9 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 		$http.get('/getOtherIdeas').success(function(response) {
 			$scope.otherIdeas = response;
 		});
+		$http.get('/getRatings').success(function(response) {
+			$scope.ratings = response;
+		});
 	};
 	refresh();
 

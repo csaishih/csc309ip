@@ -19,7 +19,7 @@ Features
 	x- User can see her submitted start-up ideas and can edit or delete an idea
 	x- User can navigate already submitted ideas of other users
 	- User can see details of a specific idea (an individual page for each idea is expected)
-	- User can express preference in favor or against an idea (like or dislike function)
+	x- User can express preference in favor or against an idea (like or dislike function)
 	- Filter
 	x- Alerts/Notifications
 	- Generate graph
