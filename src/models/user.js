@@ -22,6 +22,22 @@ var userSchema = new mongoose.Schema({
 	date: {
 		type: Date,
 		default: Date.now
+	},
+	rated: {
+		likes: [{
+			type: String,
+			index: {
+				unique: true
+			},
+			default: []
+		}],
+		dislikes: [{
+			type: String,
+			index: {
+				unique: true
+			},
+			default: []
+		}]
 	}
 }, {
 	versionKey: false

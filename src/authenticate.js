@@ -183,7 +183,9 @@ function updateIdea(id, title, description, category, tags, likes, dislikes, cal
 			'title': title,
 			'description': description,
 			'category': category,
-			'tags': tags,
+			'tags': tags
+		},
+		$inc: {
 			'rating.likes': likes,
 			'rating.dislikes': dislikes
 		}
@@ -200,6 +202,40 @@ function updateIdea(id, title, description, category, tags, likes, dislikes, cal
 	});
 }
 
+function findRating(email, id, callback) {
+	User.findOne({
+		'login.email': email,
+		'rating.likes': id
+	}, function(err, result) {
+		if (err) {
+			console.log(err);
+			throw err;
+		} else {
+			if (result) {
+				callback(1);
+			}
+		}
+	});
+	User.findOne({
+		'login.email': email,
+		'rating.dislikes': id
+	}, function(err, result) {
+		if (err) {
+			console.log(err);
+			throw err;
+		} else {
+			if (result) {
+				callback(-1);
+			}
+		}
+	});
+	callback(0);
+}
+
+function appendUserRating(email, rating, id, callback) {
+
+}
+
 exports.findUsername = findUsername;
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
@@ -210,3 +246,5 @@ exports.getUserIdeas = getUserIdeas;
 exports.getOtherIdeas = getOtherIdeas;
 exports.deleteIdea = deleteIdea;
 exports.updateIdea = updateIdea;
+exports.findRating = findRating;
+exports.appendUserRating = appendUserRating;

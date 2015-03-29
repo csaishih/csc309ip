@@ -110,5 +110,17 @@ app.get('/username', function(req, res) {
 	});
 });
 
+app.get('/findRating/:id', function(req, res) {
+	Auth.findRating(req.cookies.email, req.params.id, function(result) {
+		res.sendStatus(result);
+	});
+});
+
+app.put('/user/:rating', function(req, res) {
+	Auth.appendUserRating(req.cookies.email, req.params.rating, req.body.id, function(result) {
+		res.sendStatus(result);
+	});
+});
+
 console.log("App is running");
 app.listen(8080);

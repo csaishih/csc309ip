@@ -19,16 +19,54 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 		});
 	}
 
-	$scope.view = function(id) {
+	$scope.view = function(id, title, description, category, tags) {
 
 	}
 
-	$scope.like = function(id) {
+	$scope.like = function(id, title, description, category, tags) {
+		$http.get('/findRating/' + id).success(function(result) {
+			//1 = liked, 0 = none, -1 = disliked
+			console.log(result);
+			if (result == 0) {
+				$http.put('/user/1', {
+					id: id
+				}).success(function(response) {
+					console.log(response);
+				});
+			}
+			$http.put('/idea/' + id, {
+				title: title,
+				description: description,
+				category: category,
+				tags: tags,
+				likes: 1,
+				dislikes: 0
+			}).success(function(response) {
+				if (response) {
+					refresh();
+				} else {
+					console.log("Like error");
+				}
+			});
+		});
 
 	}
 
-	$scope.dislike = function(id) {
-
+	$scope.dislike = function(id, title, description, category, tags) {
+		$http.put('/idea/' + id, {
+			title: title,
+			description: description,
+			category: category,
+			tags: tags,
+			likes: 0,
+			dislikes: 1
+		}).success(function(response) {
+			if (response) {
+				refresh();
+			} else {
+				console.log("Like error");
+			}
+		});
 	}
 
 	$scope.create = function() {
