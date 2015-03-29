@@ -22,6 +22,6 @@ Features
 	x- User can express preference in favor or against an idea (like or dislike function)
 	- Filter
 	x- Alerts/Notifications
-	- Generate graph
+	x- Generate graph
 	- Clean up CSS
 	- Comments

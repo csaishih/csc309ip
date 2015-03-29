@@ -13,6 +13,59 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 		$http.get('/getRatings').success(function(response) {
 			$scope.ratings = response;
 		});
+		$http.get('/categoryCount').success(function(response) {
+			var chart = AmCharts.makeChart("chartdiv", {
+				"type": "serial",
+				"theme": "none",
+				"dataProvider": [{
+					"category": "Health",
+					"visits": response.health,
+					"color": "#FF0F00"
+				}, {
+					"category": "Technology",
+					"visits": response.technology,
+					"color": "#FF6600"
+				}, {
+					"category": "Education",
+					"visits": response.education,
+					"color": "#FF9E01"
+				}, {
+					"category": "Finance",
+					"visits": response.finance,
+					"color": "#FCD202"
+				}, {
+					"category": "Travel",
+					"visits": response.travel,
+					"color": "#F8FF01"
+				}],
+				"valueAxes": [{
+					"axisAlpha": 0,
+					"position": "left",
+					"title": "Number of ideas",
+					"integersOnly": true
+				}],
+				"startDuration": 1,
+				"graphs": [{
+					"balloonText": "<b>[[category]]: [[value]]</b>",
+					"fillColorsField": "color",
+					"fillAlphas": 0.9,
+					"lineAlpha": 0.2,
+					"type": "column",
+					"valueField": "visits"
+				}],
+				"chartCursor": {
+					"categoryBalloonEnabled": false,
+					"cursorAlpha": 0,
+					"zoomable": false
+				},
+				"categoryField": "category",
+				"categoryAxis": {
+					"gridPosition": "start",
+					"labelRotation": 45
+				},
+				"amExport":{}
+				});
+		});
 	};
 	refresh();
 

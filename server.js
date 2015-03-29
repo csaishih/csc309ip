@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var User = require('./src/models/user');
 var Idea = require('./src/models/idea');
-var Auth = require('./src/authenticate')
+var func = require('./src/backend')
 var app = express();
 
 mongoose.connect('mongodb://localhost/restful');
@@ -17,7 +17,7 @@ app.use('/api', require('./src/routes/api'));
 app.use('/src', express.static(__dirname + '/src'));
 
 app.get('/', function(req, res) {
-	Auth.authenticateEmail(req.cookies.email, function(result) {
+	func.authenticateEmail(req.cookies.email, function(result) {
 		if (result) {
 			res.sendFile('src/html/main.html', {root: __dirname});
 		} else {
@@ -33,7 +33,7 @@ app.get('/root.html', function(req, res) {
 
 //Main page
 app.get('/main.html', function(req, res) {
-	Auth.authenticateEmail(req.cookies.email, function(result) {
+	func.authenticateEmail(req.cookies.email, function(result) {
 		if (result) {
 			res.sendFile('src/html/main.html', {root: __dirname});
 		} else {
@@ -43,9 +43,9 @@ app.get('/main.html', function(req, res) {
 });
 
 app.post('/signup', function(req, res) {
-	Auth.authenticateSignUp(req.body.email, function(success) {
+	func.authenticateSignUp(req.body.email, function(success) {
 		if (success) {
-			Auth.createUser(req.body.name, req.body.email, req.body.password, function(result) {
+			func.createUser(req.body.name, req.body.email, req.body.password, function(result) {
 				res.send(true);
 			});
 		} else {
@@ -55,7 +55,7 @@ app.post('/signup', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-	Auth.authenticateLogin(req.body.email, req.body.password, function(result) {
+	func.authenticateLogin(req.body.email, req.body.password, function(result) {
 		if (result) {
 			res.cookie("email", req.body.email, {
 				path: '/',
@@ -75,59 +75,59 @@ app.post('/logout', function(req, res) {
 });
 
 app.post('/createIdea', function(req, res) {
-	Auth.createIdea(req.body.title, req.body.description, req.body.category, req.body.tags, req.cookies.email, function(result) {
+	func.createIdea(req.body.title, req.body.description, req.body.category, req.body.tags, req.cookies.email, function(result) {
 		res.json(result);
 	});
 });
 
 app.get('/getUserIdeas', function(req, res) {
-	Auth.getUserIdeas(req.cookies.email, function(result) {
+	func.getUserIdeas(req.cookies.email, function(result) {
 		res.json(result);
 	});
 });
 
 app.get('/getOtherIdeas', function(req, res) {
-	Auth.getOtherIdeas(req.cookies.email, function(result) {
+	func.getOtherIdeas(req.cookies.email, function(result) {
 		res.json(result);
 	});
 });
 
 app.put('/idea/:id', function(req, res) {;
-	Auth.updateIdea(req.params.id, req.body.title, req.body.description, req.body.category, req.body.tags, req.body.likes, req.body.dislikes, function(result) {
+	func.updateIdea(req.params.id, req.body.title, req.body.description, req.body.category, req.body.tags, req.body.likes, req.body.dislikes, function(result) {
 		res.json(result);
 	});
 });
 
 app.delete('/idea/:id', function(req, res) {
-	Auth.deleteIdea(req.params.id, function(result) {
+	func.deleteIdea(req.params.id, function(result) {
 		res.json(result);
 	});
 });
 
 app.get('/username', function(req, res) {
-	Auth.findUsername(req.cookies.email, function(result) {
+	func.findUsername(req.cookies.email, function(result) {
 		res.send(result);
 	});
 });
 
 app.get('/findRating/:id', function(req, res) {
-	Auth.findRating(req.cookies.email, req.params.id, function(result) {
+	func.findRating(req.cookies.email, req.params.id, function(result) {
 		res.json(result);
 	});
 });
 
 app.put('/user/:flag', function(req, res) {
 	if (req.body.flag == -1) {
-		Auth.pullUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
+		func.pullUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
 			res.json(result);
 		});
 	} else if (req.body.flag == 1){
-		Auth.pushUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
+		func.pushUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
 			res.json(result);
 		});	
 	} else if (req.body.flag == 0) {
-		Auth.pushUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
-			Auth.pullUserRating(req.cookies.email, (1 - req.params.flag), req.body.id, function(result) {
+		func.pushUserRating(req.cookies.email, req.params.flag, req.body.id, function(result) {
+			func.pullUserRating(req.cookies.email, (1 - req.params.flag), req.body.id, function(result) {
 				res.json(result);
 			});
 		});			
@@ -135,8 +135,15 @@ app.put('/user/:flag', function(req, res) {
 });
 
 app.get('/getRatings', function(req, res) {
-	Auth.getRatings(req.cookies.email, function(result) {
+	func.getRatings(req.cookies.email, function(result) {
 		res.json(result);
+	});
+});
+
+app.get('/categoryCount', function(req, res) {
+	func.categoryCount(function(response) {
+		console.log(response);
+		res.json(response);
 	});
 });
 
