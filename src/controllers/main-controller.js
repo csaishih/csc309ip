@@ -263,13 +263,13 @@ app.controller('MainController', function($scope, $modal, $http, $window) {
 			for (i = 0; i < result.tags.length; i++ ){
 				str += result.tags[i] + "', '";
 			}
-			str = str.substring(0, str.length - 4) + "'], likes: " + likes + ", dislikes: " + dislikes + " }";
+			str = str.substring(0, str.length - 4) + "'], likes: 0, dislikes: 0 }";
 			var data = JSON.stringify(eval("(" + str + ")"));
 			$scope.update(id, data);
 		});
 	}
 
-	$scope.remove = function(id) {
+	$scope.remove = function(id, title, description, category, tags) {
 		$http.delete('/idea/' + id).success(function(response) {
 			if (response) {
 				refresh();

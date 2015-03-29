@@ -18,13 +18,13 @@
 				</div>
 				<div class="nav navbar-nav navbar-right">
 					<button class="btn btn-default" ng-click="create()">Create new Idea</button>
-        		</div>
+				</div>
 			</div>
 		</nav>
 		<div class="container">
-			<h3>Hello, {{username}}</h3>
+			<div class="greeting tab">Hello, {{username}}</div>
 			<div class="panel panel-default" id="userideas">
-				<div class="panel-heading">Your ideas</div>
+				<div class="panel-heading"><b>Your ideas</b></div>
 				<table class="table">
 					<thead>
 						<tr>
@@ -38,21 +38,21 @@
 					</thead>
 					<tbody>
 						<tr class="clickable-row" ng-repeat="idea in userIdeas track by $index">
-							<td>{{idea.title}}</td>
-							<td>{{idea.description}}</td>
-							<td>{{idea.category}}</td>
-							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags track by $index" disabled>{{tag}}</button></td>
-							<td>{{idea.rating.likes}}</td>
-							<td>{{idea.rating.dislikes}}</td>
-							<td><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
-							<td><button class="btn btn-warning" ng-click="edit(idea._id, idea.title, idea.description, idea.category, idea.tags, idea.rating.likes, idea.rating.dislikes)">Edit</button></td>
-							<td><button class="btn btn-danger" ng-click="remove(idea._id)">Remove</button></td>
+							<td class="col-md-1">{{idea.title}}</td>
+							<td class="col-md-3">{{idea.description}}</td>
+							<td class="col-md-1">{{idea.category}}</td>
+							<td class="col-md-2"><div class="category blue pull-left" ng-repeat="tag in idea.tags track by $index">{{tag}}</div></td>
+							<td class="col-md-1">{{idea.rating.likes}}</td>
+							<td class="col-md-1">{{idea.rating.dislikes}}</td>
+							<td class="pull-right"><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
+							<td class="pull-right"><button class="btn btn-danger" ng-click="remove(idea._id, idea.title, idea.description, idea.category, idea.tags)">Remove</button></td>
+							<td class="pull-right"><button class="btn btn-warning" ng-click="edit(idea._id, idea.title, idea.description, idea.category, idea.tags, idea.rating.likes, idea.rating.dislikes)">Edit</button></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="panel panel-default" id="otherideas">
-				<div class="panel-heading">Ideas of other users</div>
+				<div class="panel-heading"><b>Other ideas</b></div>
 				<table class="table">
 					<thead>
 						<tr>
@@ -67,23 +67,26 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="idea in otherIdeas track by $index">
-							<td>{{idea.title}}</td>
-							<td>{{idea.description}}</td>
-							<td>{{idea.category}}</td>
-							<td><button class="btn btn-primary" ng-repeat="tag in idea.tags track by $index" disabled>{{tag}}</button></td>
-							<td>{{idea.rating.likes}}</td>
-							<td>{{idea.rating.dislikes}}</td>
-							<td>{{idea.author.name}}</td>
-							<td><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
-							<td ng-if="(ratings.likes).indexOf(idea._id) == -1"><button class="btn btn-default" ng-click="like(idea._id, idea.title, idea.description, idea.category, idea.tags)">Like</button></td>
-							<td ng-if="(ratings.likes).indexOf(idea._id) > -1"><button class="btn btn-success" ng-click="like(idea._id, idea.title, idea.description, idea.category, idea.tags)">Like</button></td>
-							<td ng-if="(ratings.dislikes).indexOf(idea._id) == -1"><button class="btn btn-default" ng-click="dislike(idea._id, idea.title, idea.description, idea.category, idea.tags)">Dislike</button></td>
-							<td ng-if="(ratings.dislikes).indexOf(idea._id) > -1"><button class="btn btn-danger" ng-click="dislike(idea._id, idea.title, idea.description, idea.category, idea.tags)">Dislike</button></td>
+							<td class="col-md-1">{{idea.title}}</td>
+							<td class="col-md-3">{{idea.description}}</td>
+							<td class="col-md-1">{{idea.category}}</td>
+							<td class="col-md-2"><div class="category blue pull-left" ng-repeat="tag in idea.tags track by $index" disabled>{{tag}}</div></td>
+							<td class="col-md-1">{{idea.rating.likes}}</td>
+							<td class="col-md-1">{{idea.rating.dislikes}}</td>
+							<td class="col-md-1">{{idea.author.name}}</td>
+							<td class="pull-right"><button class="btn btn-primary" ng-click="view(idea._id)">View</button></td>
+							<td class="pull-right" ng-if="(ratings.dislikes).indexOf(idea._id) == -1"><button class="btn btn-default" ng-click="dislike(idea._id, idea.title, idea.description, idea.category, idea.tags)">Dislike</button></td>
+							<td class="pull-right" ng-if="(ratings.dislikes).indexOf(idea._id) > -1"><button class="btn btn-danger" ng-click="dislike(idea._id, idea.title, idea.description, idea.category, idea.tags)">Dislike</button></td>
+							<td class="pull-right" ng-if="(ratings.likes).indexOf(idea._id) == -1"><button class="btn btn-default" ng-click="like(idea._id, idea.title, idea.description, idea.category, idea.tags)">Like</button></td>
+							<td class="pull-right" ng-if="(ratings.likes).indexOf(idea._id) > -1"><button class="btn btn-success" ng-click="like(idea._id, idea.title, idea.description, idea.category, idea.tags)">Like</button></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-			<div id="chartdiv"></div>
+			<div class="border">
+				<label>Distribution of categories</label>
+				<div id="chartdiv"></div>				
+			</div>
 		</div>
 
 		<script src="/src/packages/jquery.min.js"></script>

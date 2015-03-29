@@ -16,20 +16,32 @@
 				<div class="nav navbar-nav navbar-right">
 					<button class="btn btn-default" ng-click="logout()">Log out</button>
 				</div>
-				<div class="nav navbar-nav navbar-right">
-					<button class="btn btn-default" ng-click="create()">Create new Idea</button>
-        		</div>
 			</div>
 		</nav>
 		<div class="container">
+			<div class="tab">
+				<div class="category red pull-left">{{category}}</div>
+				<button class="btn btn-primary pull-right" ng-click="goBack()">Go back</button>
+			</div>
 			<div class="panel panel-info">
 				<div class="panel-heading">
 					<div class="text-right date">Created on {{month}} {{day}}, {{year}}</div>
 					<div class="title">{{title}}</div>
 					<div class="text-left author">Created by: {{authorName}}</div>
-					
 				</div>
-				<div class="panel-body">{{description}}</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-10">{{description}}</div>
+						<div class="col-md-2">
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" style="width: {{likes}}%"></div>
+								<div class="progress-bar progress-bar-danger" style="width: {{dislikes}}%"></div>
+							</div>
+							<div class="pull-left">Likes:{{ratingLikes}}</div><div class="pull-right">Dislikes:{{ratingDislikes}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer"><div class="category btn-success" ng-repeat="tag in tags track by $index">{{tag}}</div></div>
 			</div>
 		</div>
 
