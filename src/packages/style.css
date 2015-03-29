@@ -65,7 +65,33 @@
 	margin: 1px;
 }
 
+.panel-default {
+  border: 2px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.panel-default>.panel-heading {
+	border-color: green;
+}
+
 .panel-info > .panel-heading {
 	color: #eee;
 	background-color: #6cc0e5;
+}
+
+table, table>thead, table>thead>tr, table>thead>tr>th, .table, .table>thead, .table>thead>tr, .table>thead>tr>th {
+	border: 0;
+}
+
+table>tbody, table>tbody>tr, table>tbody>tr>td, .table>tbody, .table>tbody>tr, .table>tbody>tr>td {
+	border: 0;
+}
+
+table>tbody>tr>td, .table>tbody>tr {
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+
+.table>tbody>tr>td {
+	border: 0;
 }
