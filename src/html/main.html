@@ -81,13 +81,15 @@
 				<table ng-if="(otherIdeas).length > 0" class="table">
 					<thead>
 						<tr>
-							<th>Title</th>
+							<th ng-if="sortingPreferenceOrder == -1" class="btn" ng-click="sort(1, 'normalized')"><b>Title</b><span class="glyphicon glyphicon-chevron-down"></span></th>
+							<th ng-if="sortingPreferenceOrder == 1" class="btn" ng-click="sort(-1, 'normalized')"><b>Title</b><span class="glyphicon glyphicon-chevron-up"></span></th>
 							<th>Description</th>
 							<th>Category</th>
 							<th>Tags</th>
 							<th>Likes</th>
 							<th>Dislikes</th>
-							<th>Date created</th>
+							<th ng-if="sortingPreferenceOrder == -1" class="btn" ng-click="sort(1, 'date')"><b>Date created</b><span class="glyphicon glyphicon-chevron-down"></span></th>
+							<th ng-if="sortingPreferenceOrder == 1" class="btn" ng-click="sort(-1, 'date')"><b>Date created</b><span class="glyphicon glyphicon-chevron-up"></span></th>
 							<th>Author</th>
 						</tr>
 					</thead>

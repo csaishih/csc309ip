@@ -136,17 +136,40 @@ function getOtherIdeas(email, callback) {
 			console.log(err);
 			throw err;
 		} else {
-			Idea.find({
-				'author.id': {$ne: result._id},
-				'category': {$in: result.categoryPreference}
-			}, function(err, result) {
-				if (err) {
-					console.log(err);
-					throw err;
-				} else {
-					callback(result);
-				}
-			});
+			if (result.sortingPreference.sortBy == 'date') {
+				Idea.find({
+					'author.id': {$ne: result._id},
+					'category': {$in: result.categoryPreference}
+				}, null, {
+					sort: {
+						'date': result.sortingPreference.order
+					}
+				}, function(err, result) {
+					if (err) {
+						console.log(err);
+						throw err;
+					} else {
+						callback(result);
+					}
+				});
+			} else if (result.sortingPreference.sortBy == 'normalized') {
+				Idea.find({
+					'author.id': {$ne: result._id},
+					'category': {$in: result.categoryPreference}
+				}, null, {
+					sort: {
+						'normalized': result.sortingPreference.order
+					}
+				}, function(err, result) {
+					if (err) {
+						console.log(err);
+						throw err;
+					} else {
+						callback(result);
+					}
+				});
+			}
+
 		}
 	});
 }
@@ -440,6 +463,28 @@ function updateCategory(email, category, flag, callback) {
 	}
 }
 
+function updateSorting(email, order, sortBy, callback) {
+	User.findOneAndUpdate({
+		'login.email': email
+	},
+	{
+		$set: {
+			'sortingPreference.order': order,
+			'sortingPreference.sortBy': sortBy
+		}
+	},
+	{
+		new: true
+	}, function(err, result) {
+		if (err) {
+			console.log(err);
+			throw err;
+		} else {
+			callback(result);
+		}
+	});
+}
+
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
 exports.authenticateLogin = authenticateLogin;
@@ -457,3 +502,4 @@ exports.pullUserRating = pullUserRating;
 exports.getRatings = getRatings;
 exports.categoryCount = categoryCount;
 exports.updateCategory = updateCategory;
+exports.updateSorting = updateSorting;

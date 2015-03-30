@@ -53,6 +53,16 @@ var userSchema = new mongoose.Schema({
 	categoryPreference: {
 		type: Array,
 		default: ["Health", "Technology", "Education", "Finance", "Travel"]
+	},
+	sortingPreference: {
+		order: {
+			type: Number,
+			default: 1
+		},
+		sortBy: {
+			type: String,
+			default: 'date'
+		}
 	}
 }, {
 	versionKey: false

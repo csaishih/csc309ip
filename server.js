@@ -162,5 +162,11 @@ app.put('/updateCategory', function(req, res) {
 	});
 });
 
+app.put('/updateSorting', function(req, res) {
+	func.updateSorting(req.cookies.email, req.body.order, req.body.sortBy, function(response) {
+		res.json(response);
+	});
+});
+
 console.log("App is running");
 app.listen(8080);

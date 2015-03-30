@@ -4,7 +4,9 @@ app.controller('MainController', function($scope, $modal, $http, $window, toastr
 		$http.get('/getUser').success(function(response) {
 			$scope.username = response.name;
 			$scope.categoryPreference = response.categoryPreference;
-		})
+			$scope.sortingPreferenceOrder = response.sortingPreference.order;
+			$scope.sortingPreferenceSortBy = response.sortingPreference.sortBy;
+		});
 		$http.get('/getUserIdeas').success(function(response) {
 			$scope.userIdeas = response;
 			if ($scope.userIdeas.length == 0) {
@@ -72,6 +74,15 @@ app.controller('MainController', function($scope, $modal, $http, $window, toastr
 		});
 	};
 	refresh();
+
+	$scope.sort = function(order, sortBy) {
+		$http.put('/updateSorting', {
+			order: order,
+			sortBy: sortBy
+		}).success(function(response) {
+			refresh();
+		});
+	}
 
 	$scope.toggle = function(category) {
 		if (($scope.categoryPreference).indexOf(category) > -1) {
