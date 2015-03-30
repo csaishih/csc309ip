@@ -136,40 +136,76 @@ function getOtherIdeas(email, callback) {
 			console.log(err);
 			throw err;
 		} else {
-			if (result.sortingPreference.sortBy == 'date') {
-				Idea.find({
-					'author.id': {$ne: result._id},
-					'category': {$in: result.categoryPreference}
-				}, null, {
-					sort: {
-						'date': result.sortingPreference.order
-					}
-				}, function(err, result) {
-					if (err) {
-						console.log(err);
-						throw err;
-					} else {
-						callback(result);
-					}
-				});
-			} else if (result.sortingPreference.sortBy == 'normalized') {
-				Idea.find({
-					'author.id': {$ne: result._id},
-					'category': {$in: result.categoryPreference}
-				}, null, {
-					sort: {
-						'normalized': result.sortingPreference.order
-					}
-				}, function(err, result) {
-					if (err) {
-						console.log(err);
-						throw err;
-					} else {
-						callback(result);
-					}
-				});
+			if (result.filter.length > 0) {
+				if (result.sortingPreference.sortBy == 'date') {
+					Idea.find({
+						'author.id': {$ne: result._id},
+						'category': {$in: result.categoryPreference},
+						'tags': {$in: result.filter}
+					}, null, {
+						sort: {
+							'date': result.sortingPreference.order
+						}
+					}, function(err, result) {
+						if (err) {
+							console.log(err);
+							throw err;
+						} else {
+							callback(result);
+						}
+					});
+				} else if (result.sortingPreference.sortBy == 'normalized') {
+					Idea.find({
+						'author.id': {$ne: result._id},
+						'category': {$in: result.categoryPreference}
+					}, null, {
+						sort: {
+							'normalized': result.sortingPreference.order
+						}
+					}, function(err, result) {
+						if (err) {
+							console.log(err);
+							throw err;
+						} else {
+							callback(result);
+						}
+					});
+				}
+			} else {
+				if (result.sortingPreference.sortBy == 'date') {
+					Idea.find({
+						'author.id': {$ne: result._id},
+						'category': {$in: result.categoryPreference}
+					}, null, {
+						sort: {
+							'date': result.sortingPreference.order
+						}
+					}, function(err, result) {
+						if (err) {
+							console.log(err);
+							throw err;
+						} else {
+							callback(result);
+						}
+					});
+				} else if (result.sortingPreference.sortBy == 'normalized') {
+					Idea.find({
+						'author.id': {$ne: result._id},
+						'category': {$in: result.categoryPreference}
+					}, null, {
+						sort: {
+							'normalized': result.sortingPreference.order
+						}
+					}, function(err, result) {
+						if (err) {
+							console.log(err);
+							throw err;
+						} else {
+							callback(result);
+						}
+					});
+				}
 			}
-
 		}
 	});
 }
@@ -485,6 +521,59 @@ function updateSorting(email, order, sortBy, callback) {
 	});
 }
 
+function setFilter(email, clear, tags, callback) {
+	if (clear == 1) {
+		User.findOneAndUpdate({
+			'login.email': email
+		},
+		{
+			$set: {
+				'filter': []
+			}
+		},
+		{
+			new: true
+		}, function(err, result) {
+			if (err) {
+				console.log(err);
+				throw err;
+			} else {
+				callback(result);
+			}
+		});
+	} else {
+		var correctTags = (tags.replace(/;+/g, ";")).replace(/'/g, "\\'");
+
+		if (correctTags.charAt(correctTags.length - 1) == ';') {
+			correctTags = correctTags.substring(0, correctTags.length - 1)
+		}
+
+		if (correctTags.charAt(0) == ';') {
+			correctTags = correctTags.substring(1, correctTags.length)
+		}
+
+		correctTags = correctTags.split(';');
+		User.findOneAndUpdate({
+			'login.email': email
+		},
+		{
+			$set: {
+				'filter': correctTags
+			}
+		},
+		{
+			new: true
+		}, function(err, result) {
+			if (err) {
+				console.log(err);
+				throw err;
+			} else {
+				callback(result);
+			}
+		});
+	}
+}
+
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
 exports.authenticateLogin = authenticateLogin;
@@ -503,3 +592,4 @@ exports.getRatings = getRatings;
 exports.categoryCount = categoryCount;
 exports.updateCategory = updateCategory;
 exports.updateSorting = updateSorting;
+exports.setFilter = setFilter;

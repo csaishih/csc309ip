@@ -1,6 +1,7 @@
 var app = angular.module('main', ['ui.bootstrap', 'ngAnimate', 'toastr']);
 app.controller('MainController', function($scope, $modal, $http, $window, toastr) {
 	var refresh = function() {
+		$scope.filterTags = "";
 		$http.get('/getUser').success(function(response) {
 			$scope.username = response.name;
 			$scope.categoryPreference = response.categoryPreference;
@@ -9,9 +10,6 @@ app.controller('MainController', function($scope, $modal, $http, $window, toastr
 		});
 		$http.get('/getUserIdeas').success(function(response) {
 			$scope.userIdeas = response;
-			if ($scope.userIdeas.length == 0) {
-				toastr.info('Start by creating your first idea!', 'Welcome');
-			}
 		});
 		$http.get('/getOtherIdeas').success(function(response) {
 			$scope.otherIdeas = response;
@@ -75,6 +73,16 @@ app.controller('MainController', function($scope, $modal, $http, $window, toastr
 	};
 	refresh();
 
+	$scope.clearFilter = function() {
+		$http.post('/setFilter', {
+			clear: 1,
+			tags: ""
+		}).success(function(response) {
+			refresh();
+		});
+	}
+	$scope.clearFilter();
+
 	$scope.sort = function(order, sortBy) {
 		$http.put('/updateSorting', {
 			order: order,
@@ -82,6 +90,17 @@ app.controller('MainController', function($scope, $modal, $http, $window, toastr
 		}).success(function(response) {
 			refresh();
 		});
+	}
+
+	$scope.filter = function() {
+		if ($scope.filterTags != "") {
+			$http.post('/setFilter', {
+				clear: 0,
+				tags: $scope.filterTags
+			}).success(function(response) {
+				refresh();
+			});
+		}
 	}
 
 	$scope.toggle = function(category) {

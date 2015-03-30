@@ -11,6 +11,7 @@ app.controller('ViewController', function($scope, $modal, $http, $window) {
 			$scope.ratingDislikes = response.rating.dislikes;
 			$scope.authorName = response.author.name;
 			$scope.date = response.date;
+			$scope.parsedDate = response.parsedDate;
 
 			var total = $scope.ratingLikes + $scope.ratingDislikes;
 			if (total > 0) {

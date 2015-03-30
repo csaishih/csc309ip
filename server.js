@@ -168,5 +168,11 @@ app.put('/updateSorting', function(req, res) {
 	});
 });
 
+app.post('/setFilter', function(req, res) {
+	func.setFilter(req.cookies.email, req.body.clear, req.body.tags, function(response) {
+		res.json(response);
+	});
+});
+
 console.log("App is running");
 app.listen(8080);

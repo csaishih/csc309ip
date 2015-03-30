@@ -63,6 +63,10 @@ var userSchema = new mongoose.Schema({
 			type: String,
 			default: 'date'
 		}
+	},
+	filter: {
+		type: Array,
+		default: []
 	}
 }, {
 	versionKey: false
