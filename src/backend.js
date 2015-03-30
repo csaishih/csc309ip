@@ -574,6 +574,29 @@ function setFilter(email, clear, tags, callback) {
 	}
 }
 
+function retrieve(posInt, sdate, edate, callback) {
+	Idea.find({
+		'date': {
+			$gte: sdate,
+			$lt: edate
+		}
+	}, null, {
+		sort: {
+			'rating.likes': -1
+		}
+	}, function(err, result) {
+		if (err) {
+			console.log(err);
+			throw err;
+		} else {
+			if (posInt > result.length) {
+				posInt = result.length;
+			}
+			callback(result.slice(0, posInt));
+		}
+	});
+}
+
 exports.authenticateEmail = authenticateEmail;
 exports.authenticateSignUp = authenticateSignUp;
 exports.authenticateLogin = authenticateLogin;
@@ -593,3 +616,4 @@ exports.categoryCount = categoryCount;
 exports.updateCategory = updateCategory;
 exports.updateSorting = updateSorting;
 exports.setFilter = setFilter;
+exports.retrieve = retrieve;

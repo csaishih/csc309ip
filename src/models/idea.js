@@ -33,7 +33,7 @@ var ideaSchema = new mongoose.Schema({
 	tags: [String],
 	date: {
 		type: Date,
-		default: Date.now
+		default: date
 	},
 	parsedDate: {
 		type: String,

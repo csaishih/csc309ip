@@ -174,5 +174,11 @@ app.post('/setFilter', function(req, res) {
 	});
 });
 
+app.post('/retrieve', function(req, res) {
+	func.retrieve(req.body.posInt, req.body.sdate, req.body.edate, function(response) {
+		res.json(response);
+	});
+});
+
 console.log("App is running");
 app.listen(8080);

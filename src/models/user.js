@@ -28,7 +28,7 @@ var userSchema = new mongoose.Schema({
 	},
 	date: {
 		type: Date,
-		default: Date.now
+		default: date
 	},
 	parsedDate: {
 		type: String,

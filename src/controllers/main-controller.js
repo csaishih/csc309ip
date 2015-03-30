@@ -73,6 +73,23 @@ app.controller('MainController', function($scope, $modal, $http, $window, toastr
 	};
 	refresh();
 
+	$scope.retrieve = function() {
+		if ($scope.posInt > 0) {
+			$scope.edate.setHours(23);
+			$scope.edate.setMinutes(59);
+			$scope.edate.setSeconds(59);
+			$http.post('/retrieve', {
+				posInt: $scope.posInt,
+				sdate: $scope.sdate,
+				edate: $scope.edate
+			}).success(function(response) {
+				console.log(response);
+			});
+		} else {
+			toastr.warning('Please enter the number of results you would like to receive', 'Warning');
+		}
+	}
+
 	$scope.clearFilter = function() {
 		$http.post('/setFilter', {
 			clear: 1,
@@ -100,6 +117,8 @@ app.controller('MainController', function($scope, $modal, $http, $window, toastr
 			}).success(function(response) {
 				refresh();
 			});
+		} else {
+			toastr.error('Please enter tags to filter', 'Error');
 		}
 	}
 
