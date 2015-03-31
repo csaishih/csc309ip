@@ -151,13 +151,15 @@ function getOtherIdeas(email, callback) {
 							console.log(err);
 							throw err;
 						} else {
+							console.log(result);
 							callback(result);
 						}
 					});
 				} else if (result.sortingPreference.sortBy == 'normalized') {
 					Idea.find({
 						'author.id': {$ne: result._id},
-						'category': {$in: result.categoryPreference}
+						'category': {$in: result.categoryPreference},
+						'tags': {$in: result.filter}
 					}, null, {
 						sort: {
 							'normalized': result.sortingPreference.order
@@ -575,6 +577,14 @@ function setFilter(email, clear, tags, callback) {
 }
 
 function retrieve(posInt, sdate, edate, callback) {
+	sdate = new Date(sdate);
+	edate = new Date(edate);
+	sdate.setHours(0);
+	sdate.setMinutes(0);
+	sdate.setSeconds(0);
+	edate.setHours(23);
+	edate.setMinutes(59);
+	edate.setSeconds(59);
 	Idea.find({
 		'date': {
 			$gte: sdate,

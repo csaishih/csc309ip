@@ -75,19 +75,32 @@ app.controller('MainController', function($scope, $modal, $http, $window, toastr
 
 	$scope.retrieve = function() {
 		if ($scope.posInt > 0) {
-			$scope.edate.setHours(23);
-			$scope.edate.setMinutes(59);
-			$scope.edate.setSeconds(59);
+			$scope.edate.setHours(0);
+			$scope.edate.setMinutes(0);
+			$scope.edate.setSeconds(0);
 			$http.post('/retrieve', {
 				posInt: $scope.posInt,
 				sdate: $scope.sdate,
 				edate: $scope.edate
 			}).success(function(response) {
-				console.log(response);
+				$scope.retrieveModal(response);
 			});
 		} else {
 			toastr.warning('Please enter the number of results you would like to receive', 'Warning');
 		}
+	}
+
+	$scope.retrieveModal = function(response) {
+		var modalInstance = $modal.open({
+			templateUrl: '/src/html/modal_retrieve.html',
+			controller: 'RetrieveModalController',
+			size: "lg",
+			resolve: {
+				input: function() {
+					return response;
+				}
+			}
+		});
 	}
 
 	$scope.clearFilter = function() {
@@ -434,6 +447,9 @@ app.controller('MainModalController', function($scope, $modalInstance, toastr, i
 	};
 });
 
+app.controller('RetrieveModalController', function($scope, $modalInstance, input) {
+	$scope.response = input;
+});
 app.config(function(toastrConfig) {
 	angular.extend(toastrConfig, {
 		closeButton: true,
